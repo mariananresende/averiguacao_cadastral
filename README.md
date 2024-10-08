@@ -110,13 +110,13 @@ Uma base apresenta os dados de pessoas e a outra base os dados das famílias. É
 
 
 
-## Variável dependente
+## Variável dependente (target)
 A variavél dependente do projeto é a vlr_renda_media_fam: Valor da renda média (per capita) da família. Será criada uma nova variável, com a classe da faixa de renda da família, conforme se segue:
 * Classe 1: Pobreza (de 0 a 218,00);
 * Classe 2: Baixa renda (de 218,01 a 1/2 salário-mínimo);
 * Classe 3: Acima de 1/2 salário-mínimo.
 
-## Variáveis independentes
+## Variáveis independentes (features)
 Para a seleção das variáveis independentes, serão aplicadas técnicas de Machine Learning para definição das que contribuem diretamente para a classificação mais adequada das famílias nas classes de renda. Além disso, será realizada engenharia de features para a construção de novas variáveis, a partir das existentes, que podem contribuir para a maior acurácia do modelo. 
 De modo a ouvir a área de negócio, será realizada uma reunião com a Coordenação-Geral de Acompanhamento e Qualificação do Cadastro, do Departamento de Operação do Cadastro Único (CGAQC/DECAU). 
 A partir das contribuições da área de negócio e com o objetivo de possibilitar o exercício por todos os autores do projeto no âmbito do Bootcamp, as análises serão divididas conforme se segue:
