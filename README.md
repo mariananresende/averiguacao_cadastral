@@ -129,7 +129,7 @@ A partir das contribuições da área de negócio e com o objetivo de possibilit
 
 ### Variáveis comuns a todas as análises:
 #### Base famílias
-* cd_ibge - DEFINIR
+* cd_ibge - DEFINIR ideias: região, estado, porte de município, pib, infra-estrutura dos muncicípios;
 * dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
 * dat_atualizacao_familia - Número de dias entre 31/12/2018 e a data de atualização cadastral;
 * cod_local_domic_fam;
