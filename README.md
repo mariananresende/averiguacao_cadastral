@@ -13,10 +13,10 @@ Para reduzir erros de inclusão, constantemente é feito um processo de qualific
 
 Considerando a referência de setembro/2024, existem mais de 40 milhões de famílias incluídas no Cadastro Único, e 93 milhões de pessoas. Para uma melhor focalização das políticas públicas sociais usuárias deste cadastro para seleção dos beneficiários é preciso automatizar o processo de averiguação cadastral.
 
-Para tanto, a proposta do presente projeto é propor um algoritmo que, a partir das características das família, seja possível classificar cada família em uma faixa de renda mais provável:
-* Pobreza: de 0 a 218,00;
-* Baixa renda: de 218,01 a 1/2 salário-mínimo;
-* Acima de 1/2 salário-mínimo.
+Para tanto, a proposta do presente projeto é propor um algoritmo que, a partir das características das família, seja possível classificar cada família em uma faixa de renda mais provável. Destaca-se que, considerando que as bases utilizadas são de 2018, os valores utilizados para a definição das faixas de renda serão as vigentes em 2018, conforme segue abaixo:
+* Pobreza: de 0 a 178,00, considerando a faixa de pobreza do Programa Bolsa Família em 2018;
+* Baixa renda: de 178,01 a 1/2 salário-mínimo vigente em 2018, qual seja 954,00;
+* Acima de 1/2 salário-mínimo, ou seja, acima de 477,00.
   
 O modelo objetiva auxiliar em uma maior focalização das políticas públicas sociais para as famílias que apresentam características relacionadas à maior vulnerabilidade de renda, identificando famílias que apresentam caracterísiticas não esperadas para a faixa de renda apresentada, guiando ações de qualificação do Cadastro Único.
 
@@ -111,10 +111,10 @@ Uma base apresenta os dados de pessoas e a outra base os dados das famílias. É
 
 
 ## Variável dependente (target)
-A variavél dependente do projeto é a vlr_renda_media_fam: Valor da renda média (per capita) da família. Será criada uma nova variável, com a classe da faixa de renda da família, conforme se segue:
-* Classe 1: Pobreza (de 0 a 218,00);
-* Classe 2: Baixa renda (de 218,01 a 1/2 salário-mínimo);
-* Classe 3: Acima de 1/2 salário-mínimo.
+A variavél dependente do projeto é a vlr_renda_media_fam: Valor da renda média (per capita) da família. Foi criada uma nova variável, com a classe da faixa de renda da família, conforme se segue:
+* Classe 1: vlr_renda_media_fam >= 0 e <= 178;
+* Classe 2: vlr_renda_media_fam > 178 e <= 477;
+* Classe 3: vlr_renda_media_fam > 477.
 
 ## Variáveis independentes (features)
 Para a seleção das variáveis independentes, serão aplicadas técnicas de Machine Learning para definição das que contribuem diretamente para a classificação mais adequada das famílias nas classes de renda. Além disso, será realizada engenharia de features para a construção de novas variáveis, a partir das existentes, que podem contribuir para a maior acurácia do modelo. 
