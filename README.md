@@ -7,7 +7,7 @@ Repositório para projeto conjunto no âmbito do Bootcamp em Machine Learning co
 Algoritmo de classificação usando técnicas de Machine Learning (ML) para identificação do público para averiguação Cadastral
 
 ## Descrição do problema 
-O Cadastro Único para Programas Sociais é o principal instrumento do Estado brasileiro para a seleção e a inclusão de famílias de baixa renda em programas federais, sendo usado para a concessão dos benefícios do Programa Bolsa Família, do Pé de Meia, da Tarifa Social de Energia Elétrica, do Auxílio Gás, do Programa Minha Casa Minha Vida, entre outros. 
+O Cadastro Único para Programas Sociais é o principal instrumento do Estado brasileiro para a caracterização socioeconômica das famílias de baixa renda que residem no território nacional, para permitir a seleção e a inclusão dessas famílias em programas federais, sendo usado para a concessão dos benefícios do Programa Bolsa Família, do Pé de Meia, da Tarifa Social de Energia Elétrica, do Auxílio Gás, do Programa Minha Casa Minha Vida, entre outros. 
 
 Para reduzir erros de inclusão, constantemente é feito um processo de qualificação cadastral. Neste ano, por exemplo, até o momento foram convocadas 3,3 milhões de famílias para averiguação do cadastro, o qual consiste em verificar as famílias que apresentam algum indício de inconsistência, seja de renda, de declaração de vínculo empregatício, ou de composição familiar.
 
@@ -32,17 +32,25 @@ As bases são amostrais, desidentificadas, sendo as últimas bases disponíveis 
 
 Uma base apresenta os dados de pessoas e a outra base os dados das famílias. É possível combinar as duas bases de dados por meio da variável id_familia: Identificador único da família para pareamento com a base de pessoas. No caso da Base famílias, os dados estão relacionados à família, sendo uma por linha. No caso da Base pessoas é uma pessoa por linha, sendo que a variável id_familia estará repetida para as pessoas que compõem a mesma família. 
 
-Como as bases são muito grandes, tendo a base de famílias mais de 4,8 milhões de linhas e a de pessoas mais de 12,8 milhões, foi preparada uma base amostral da base de famílias de 100 mil linhas, retirando as linhas com valores vazios e retirando as colunas "nom_estab_assist_saude_fam", "cod_eas_fam", "nom_centro_assist_fam" e "cod_centro_assist_fam" por não serem relevantes para a construção do modelo e por apresentarem muitos valores vazios conforme imagem abaixo.
+Como as bases são muito grandes, tendo a base de famílias mais de 4,8 milhões de linhas e a de pessoas mais de 12,8 milhões, foi preparada uma base amostral da base de famílias de 100 mil linhas retirando as colunas "nom_estab_assist_saude_fam", "cod_eas_fam", "nom_centro_assist_fam" e "cod_centro_assist_fam" por não serem relevantes para a construção do modelo e por apresentarem muitos valores vazios conforme imagem abaixo.
 
-A partir da base amostral de famílias, foi feito um merge com a base pessoas, a partir do id_familia, mantendo apenas as pessoas relacionadas às famílias da base amostral, resultando em uma base amostral com mais de 260 mil linhas.
+![Percentual_ausentes_base_fam](Perc_ausentes_fam.jpg)
 
-Abaixo segue o dicionário das bases originais.
+Além disso, foram incluídas, após a coluna cd_ibge, duas novas colunas, uf_ibge e regiao_ibge, de modo a permitir a análise se essas variáveis contribuem para a acurácia do modelo.
+
+A partir da base amostral de famílias, foi feito um merge com a base pessoas, usando o id_familia. Para tanto, foram excluídas as colunas "cd_ibge", "estrato" e "classf" da base de pessoas, pois são colunas comuns à base de famílias e não foram usadas para o merge, já que apenas o valor id_familia é único na base de famílias.
+
+Na base final, foram mantidades as 100 mil famílias incluídas na base amostral de famílias e as pessoas da base de pessoas relacionadas com o mesmo id_familia da base amostral, resultando em uma base amostral de famílias e pessoas com mais de 260 mil linhas.
+
+Abaixo segue o dicionário das bases utilizadas.
 
 ### Base famílias
 
 | Seq. | Nome da variável                 | Tipo   | Tamanho (Inteiro) | Tamanho (Decimal) | Descrição                                                                                                     |
 |------|-----------------------------------|--------|-------------------|------------------|---------------------------------------------------------------------------------------------------------------|
 | 1    | cd_ibge                          | String | 7                 |                  | Código IBGE do Município                                                                                       |
+| 1a    | uf_ibge                          | String | 2                 |              | Código IBGE da Unidade Federada  :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)** |
+| 1b    | regiao_ibge                      | String | 2                 |                  | Sigla da região da Unidade Federada :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
 | 2    | dat_cadastramento_fam             | String | 8                 |                  | Data do cadastramento da família no formato YYYY-MM-DD                                                         |
 | 3    | dat_alteracao_fam                 | Date   | 8                 |                  | Data da última alteração em qualquer campo da família no formato YYYY-MM-DD (Variável utilizada nos anos de 2014, 2015, 2016 e 2017)                 |
 | 4    | vlr_renda_media_fam               | Numeric| 9                 |                  | Valor da renda média (per capita) da família, formato NNNNNNNNN (não tem a vírgula). Ex.: Uma renda de R$ 125,00 constará na base como 125            |
@@ -63,10 +71,10 @@ Abaixo segue o dicionário das bases originais.
 | 19   | cod_calcamento_domic_fam          | Numeric| 1                 |                  | Calçamento: 1 - Total, 2 - Parcial, 3 - Não existe                                                             |
 | 20   | cod_familia_indigena_fam          | Numeric| 1                 |                  | Família indígena: 1 - Sim, 2 - Não                                                                             |
 | 21   | ind_familia_quilombola_fam        | Numeric| 1                 |                  | Família quilombola: 1 - Sim, 2 - Não                                                                           |
-| 22   | nom_estab_assist_saude_fam        | String | 70                |                  | Nome do estabelecimento EAS/MS                                                                                 |
-| 23   | cod_eas_fam                       | String | 12                |                  | Código do estabelecimento EAS/MS                                                                               |
-| 24   | nom_centro_assist_fam             | String | 70                |                  | Nome do CRAS/CREAS                                                                                            |
-| 25   | cod_centro_assist_fam             | String | 12                |                  | Código do CRAS/CREAS                                                                                           |
+| 22   | nom_estab_assist_saude_fam        | String | 70                |                  | Nome do estabelecimento EAS/MS   :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**     |
+| 23   | cod_eas_fam                       | String | 12                |                  | Código do estabelecimento EAS/MS  :exclamation::heavy_exclamation_mark:  **(Coluna excluída na base amostral)**    |
+| 24   | nom_centro_assist_fam             | String | 70                |                  | Nome do CRAS/CREAS :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**            |
+| 25   | cod_centro_assist_fam             | String | 12                |                  | Código do CRAS/CREAS :exclamation::heavy_exclamation_mark:  **(Coluna excluída na base amostral)**     |
 | 26   | ind_parc_mds_fam                  | Numeric| 3                 |                  | Grupos tradicionais e específicos: 101 Família Cigana, 201 Família Extrativista, 202 Família de Pescadores, etc.|
 | 27   | peso_fam                          | Numeric| 1                 | 14               | Peso calculado da família                                                                                      |
 | 28   | id_familia                        | Numeric| 8                 |                  | Identificador único da família para pareamento com a base de pessoas                                           |
@@ -79,7 +87,7 @@ Abaixo segue o dicionário das bases originais.
 
 | Seq. | Nome da variável                 | Tipo    | Tamanho (Inteiro) | Tamanho (Decimal) | Descrição                                                                                                                                           |
 |------|-----------------------------------|---------|-------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1    | cd_ibge                          | String  | 7                 |                   | Código IBGE do Município                                                                                                                             |
+| 1    | cd_ibge                          | String  | 7                 |                   | Código IBGE do Município :exclamation::heavy_exclamation_mark:   **(Coluna excluída na base amostral)**        |
 | 2    | cod_sexo_pessoa                  | Numeric | 1                 |                   | Sexo: 1 - Masculino, 2 - Feminino                                                                                                                    |
 | 3    | idade                            | Numeric | 3                 |                   | Idade calculada a partir da diferença entre a data de nascimento da pessoa e a data de referência da base                                             |
 | 4    | cod_parentesco_rf_pessoa          | Numeric | 2                 |                   | Relação de parentesco com o RF: 1 - Pessoa Responsável pela Unidade Familiar, 2 - Cônjuge ou companheiro(a), ...                                      |
@@ -111,9 +119,8 @@ Abaixo segue o dicionário das bases originais.
 | 30   | peso.fam                        | Numeric | 1                 | 14                | Peso calculado da família                                                                                                                            |
 | 31   | peso.pes                        | Numeric | 1                 | 14                | Peso calculado da pessoa                                                                                                                             |
 | 32   | id_familia                      | Numeric | 8                 |                   | Identificador único da família de vinculação da pessoa para pareamento com a base de famílias                                                        |
-| 33   | estrato                         | Numeric | 1                 |                   | São grandes grupos de municípios, de acordo com a quantidade de famílias cadastradas: 1 - GM1 (101 A 5.000 famílias), 2 - GM2 (5.001 ou mais famílias) |
-| 34   | classf                          | Numeric | 1                 |                   | Subdivisão pela Unidade Federativa e divisão administrativa: 1 - Capital, 2 - Região Metropolitana (RM) ou Região Integrada de Desenvolvimento (RIDE) |
-
+| 33   | estrato                         | Numeric | 1                 |                   | São grandes grupos de municípios, de acordo com a quantidade de famílias cadastradas: 1 - GM1 (101 A 5.000 famílias), 2 - GM2 (5.001 ou mais famílias)  :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**   |
+| 34   | classf                          | Numeric | 1                 |                   | Subdivisão pela Unidade Federativa e divisão administrativa: 1 - Capital, 2 - Região Metropolitana (RM) ou Região Integrada de Desenvolvimento (RIDE) :exclamation::heavy_exclamation_mark:  **(Coluna excluída na base amostral)**   |
 
 
 ## Variável dependente (target)
@@ -179,12 +186,14 @@ A partir das contribuições da área de negócio e com o objetivo de possibilit
 Avaliar outras variáveis constantes nas bases do Cadastro Único, incluindo variáveis propostas a partir da engenharia de variáveis independentes (features engineering), de modo a identificar se alguma variável não incluída nas variáveis propostas inicialmente parecem contribuir de maneira significativa para a acurácia do modelo. Para tanto, serão estudadas as variáveis que compõem uma das 6 (seis) dimensões de vulnerabilidade do Índice de Vulnerabilidade das Famílias do Cadastro Único (IVCAD), conforme documentação dos indicadores do Cadastro Único apresentada na ferramenta de metadados <a href="https://wiki-sagi.cidadania.gov.br/en/home/DS/Cad/I">Documenta Wiki</a>
 
 ### Análise 5:
-Avaliar outras variáveis constantes nas bases do Cadastro Único, incluindo variáveis propostas a partir da engenharia de variáveis independentes (features engineering), de modo a identificar se alguma variável não incluída nas variáveis propostas inicialmente parecem contribuir de maneira significativa para a acurácia do modelo. Para tanto, serão estudadas as variáveis que compõem uma das 6 (seis) dimensões de vulnerabilidade do Índice de Vulnerabilidade das Famílias do Cadastro Único (IVCAD), conforme documentação dos indicadores do Cadastro Único apresentada na ferramenta de metadados <a href="https://wiki-sagi.cidadania.gov.br/en/home/DS/Cad/I">Documenta Wiki</a>
+Serão procuradas outras bases de dados que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se estas variáveis ajudam na acurácia do modelo.
 
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira
 
 Mariana Nogueira de Resende Sousa
+
+Michela
 
 Renata
 
