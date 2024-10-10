@@ -131,63 +131,101 @@ A variavél dependente do projeto é a vlr_renda_media_fam: Valor da renda médi
 
 ## Variáveis independentes (features)
 Para a seleção das variáveis independentes, serão aplicadas técnicas de Machine Learning para definição das que contribuem diretamente para a classificação mais adequada das famílias nas classes de renda. Além disso, será realizada engenharia de features para a construção de novas variáveis, a partir das existentes, que podem contribuir para a maior acurácia do modelo. 
-De modo a ouvir a área de negócio, será realizada uma reunião com a Coordenação-Geral de Acompanhamento e Qualificação do Cadastro, do Departamento de Operação do Cadastro Único (CGAQC/DECAU). 
-A partir das contribuições da área de negócio e com o objetivo de possibilitar o exercício por todos os autores do projeto no âmbito do Bootcamp, as análises foram dividdas em grupos de análises, sendo algumas comuns a todos os grupos e outras dividas conforme segue abaixo:
+De modo a ouvir a área de negócio, foram realizadas reuniões com a Coordenadora-Geral de Acompanhamento e Qualificação do Cadastro, do Departamento de Operação do Cadastro Único (CGAQC/DECAU). 
+A partir das contribuições da área de negócio e com o objetivo de possibilitar o exercício por todos os autores do projeto no âmbito do Bootcamp, as análises foram dividdas em grupos temáticos, conforme se segue:
 
-### Variáveis comuns a todas as análises:
-#### Base famílias
-* cd_ibge - DEFINIR ideias: região, estado, porte de município, pib, infra-estrutura dos muncicípios;
-* dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
-* dat_atualizacao_familia - Número de dias entre 31/12/2018 e a data de atualização cadastral;
-* cod_local_domic_fam;
-* cod_agua_canalizada_fam;
-* cod_escoa_sanitario_domic_fam;
-* cod_familia_indigena_fam; ind_familia_quilombola_fam; ind_parc_mds_fam: 0 no caso de não pertencer a nenhum Grupo populacional tradicional e específico, 1 no caso de pertencer a pelo menos 1;
-* qtd_pessoas: Quantidade de pessoas utilizada no cálculo da renda per capita familiar;
+### Características do Responsável Familiar:
+O Responsável pela Unidadde Familiar (RUF) é a pessoa responsável por prestar as informações ao Cadastro Único em nome da família, que pode ser: 
+* Responsável Familiar (RF) - deve ser um dos componentes da família e morador do domicílio, com idade mínima de 16 (dezesseis) anos, preferencialmente mulher;
+* Representante Legal (RL) - indivíduo não membro da família e que não seja morador do domicílio, legalmente responsável por pessoas menores de dezesseis anos ou incapazes e responsável por prestar as informações ao Cadastro Único, quando não houver morador caracterizado como Responsável Familiar. Nas situações em que a família tiver o RL, este a representará e atuará em nome da família que está sendo cadastrada. Sendo assim, o RL
+que será entrevistado para prestar as informações da família e de seus integrantes. No momento da entrevista, as informações de todas as pessoas da família devem ser prestadas pelo RUF.
 
-#### Base pessoas
+De modo a avaliar se as características do RF contribuem para a acurácia do modelo, serão incluídas, pelo menos, as seguintes varáveis no modelo da **Base Pessoas**:
 * rf_mulher - Nova variável cruzando as variáveis "cod_sexo_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser mulher e 1 para o caso de ser mulher;
 * rf_branca - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Branca e 1 para o caso de ser branca;
 * rf_preta - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 2 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Preta e 1 para o caso de ser Preta;
 * rf_amarela - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 3 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Amarela e 1 para o caso de ser Amarela;
 * rf_parda - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 4 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Parda e 1 para o caso de ser Parda;
 * rf_indigena - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 5 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Indígena e 1 para o caso de ser Indígena;
+* rf_deficiencia - Nova variável cruzando as variáveis "cod_deficiencia_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta 0 para o caso do RF não ter deficiência e 1 para o caso de ter;
+* rf_ler_escrever - Nova variável cruzando as variáveis "cod_sabe_ler_escrever_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta 0 para o caso do RF não saber ler e escrever e 1 para o caso do RF saber ler ou escrever;
+* rf_escolaridade_creche - Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 1 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_pre_escolar - Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 2 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_alfabetizacao - Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 3 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_fund1 -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 4 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_fund2 -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 5 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_fund9anos -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 6 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_fund1_EJA -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 10 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_fund2_EJA -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 11 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_supletivo -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 12 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_superior -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 13 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_alfabetizacao_adulto -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 14 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_escolaridade_alfabetizacao_nenhum -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 15 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
+* rf_curso_concluido - Nova variável cruzando as variáveis "cod_concluiu_frequentou_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso de não ter concluído e 1 para o caso de ter concluído;
 * rf_trabalhou - Nova variável cruzando as variáveis "cod_trabalhou_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ter trabalhado na semana passada e 1 para o caso de ter trabalhado;
+* rf_afastado_trablho - Nova variável cruzando as variáveis "cod_afastado_trab_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ter se fastado do trabalho na semana passada e 1 para o caso de ter se afastado do trabalho;
 * rf_qtd_meses_12_meses_memb - Nova variável cruzando as variáveis "qtd_meses_12_meses_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta o número de meses que o RF trabalhou nos últimos 12 meses.
-
-### Análise 1: 
-* 1_infancia: nova variável construída a partir da variável "idade", de modo a identificar se na família tem ao menos 1 pessoa na 1ª infância, ou seja de 0 a 6 anos de idade, sendo 0 se não tem e 1 se existe na família ao menos 1 pessoa;
-* crianca_adolescente: nova variável construída a partir da variável "idade", de modo a identificar se na família tem ao menos 1 pessoa que tenha mais de 6 anos e até 17 anos de idade, sendo 0 se não tem e 1 se existe na família ao menos 1 pessoa;
-* idoso: nova variável construída a partir da variável "idade" de modo a identificar se na família tem ao menos 1 pessoa com 60 anos ou mais; 
-* deficiencia: nova variável construída a partir da variável "cod_deficiencia_memb" de modo a identificar se na família há pelo menos 1 pessoa com deficiência, sendo 0 se não tem e 1 se existe na família pelo menos 1 pessoa com deficiência;
-* alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar se na família a pelo menos uma pessoa com mais de 10 anos sem saber ler ou escrever, sendo 0 para quando não houver e 1 para quando houver;
-* frequenta_escola: nova variávbel comninando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar se na família há pelo menos 1 pessoa com menos de 17 anos que não está na escola;
-* memb_trabalhou_estudou: nova variável combinando as variáveis "cod_trabalhou_memb", "idade", "ind_frequenta_escola_memb" e "cod_parentesco_rf_pessoa", quando "cod_parentesco_rf_pessoa" for diferente de 1, de modo a identificar se na família existe outra pessoa, que não seja o responsável familiar, com 15 anos ou mais, que não trabalhou na semana passada ("cod_trabalhou_memb"=2) e que não estuda ("ind_frequenta_escola_memb"=3 ou 4), sendo 0 se não existir pessoa com essas características e 1 se existir.
-
-### Análise 2:
-* 1_infancia: nova variável construída a partir da variável "idade", de modo a identificar o número de pessoas que na família da 1ª infância, ou seja, com idade entre 0 e 6 anos, sendo o resultado o número absoluto das pessoas que preenchem esse critério;
-* crianca_adolescente: nova variável construída a partir da variável "idade", de modo a identificar o número de pessoas que na família com mais de 6 anos e até 17 anos de idade, sendo o resultado o número absoluto das pessoas que preenchem esse critério;
-* idoso: nova variável construída a partir da variável "idade" de modo a identificar o número de pessoas que na família com 60 anos ou mais de idade, sendo o resultado o número absoluto das pessoas que preenchem esse critério;
-* deficiencia: nova variável construída a partir da variável "cod_deficiencia_memb" de modo a identificar o número de pessoas com deficiência na família, sendo o resultado o número absoluto das pessoas que preenchem esse critério;
-* alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar o número de pessoas na família com mais de 10 anos quem não sabem ler ou escrever, sendo o resultado o número absoluto das pessoas que preenchem esse critério;
-* frequenta_escola: nova variávbel combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar o número de pessoas na família com menos de 17 anos e que não está na escola, sendo o resultado o número absoluto das pessoas que preenchem esse critério;
-* memb_trabalhou_estudou: nova variável combinando as variáveis "cod_trabalhou_memb", "idade", "ind_frequenta_escola_memb" e "cod_parentesco_rf_pessoa", quando "cod_parentesco_rf_pessoa" for diferente de 1, de modo a identificar o número de pessas na família que não seja o responsável familiar, com 15 anos ou mais, que não trabalhou na semana passada ("cod_trabalhou_memb"=2) e que não estuda ("ind_frequenta_escola_memb"=3 ou 4), sendo o resultado o número absoluto das pessoas que preenchem esse critério.
   
-### Análise 3:
-* 1_infancia: nova variável construída a partir da variável "idade", de modo a calcular o percentual de pessoas da família da 1ª infância, ou seja, com idade entre 0 e 6 anos, sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família;
-* crianca_adolescente: nova variável construída a partir da variável "idade", de modo a calcular o percentual de pessoas na família com mais de 6 anos e até 17 anos de idade, sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família;
-* idoso: nova variável construída a partir da variável "idade" de modo a calcular o percentual de pessoas que na família com 60 anos ou mais de idade, sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família;
-* deficiencia: nova variável construída a partir da variável "cod_deficiencia_memb" de modo a calcular o percentual de pessoas com deficiência na família, sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família;
-* alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a calcular o percentual de pessoas na família com mais de 10 anos quem não sabem ler ou escrever, sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família;
-* frequenta_escola: nova variávbel combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a calcular o percentual de pessoas na família com menos de 17 anos e que não está na escola, sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família;
-* memb_trabalhou_estudou: nova variável combinando as variáveis "cod_trabalhou_memb", "idade", "ind_frequenta_escola_memb" e "cod_parentesco_rf_pessoa", quando "cod_parentesco_rf_pessoa" for diferente de 1, de modo a calcular o percentual de pessas na família que não seja o responsável familiar, com 15 anos ou mais, que não trabalhou na semana passada ("cod_trabalhou_memb"=2) e que não estuda ("ind_frequenta_escola_memb"=3 ou 4), sendo o resultado o percentual entre o número absoluto de pessoas que preenchem esse critério pelo número total de pessoas na família.
+### Características do domicílio:
+Para analisar se as características do domicílio contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias**:
+* uf_ibge;
+* regiao_ibge;
+* cod_local_domic_fam;
+* cod_especie_domic_fam;
+* qtd_comodos_domic_fam;
+* qtd_comodos_dormitorio_fam;
+* cod_material_piso_fam;
+* cod_material_domic_fam
+* cod_agua_canalizada_fam;
+* cod_abaste_agua_domic_fam;
+* cod_banheiro_domic_fam;
+* cod_escoa_sanitario_domic_fam;
+* cod_destino_lixo_domic_fam;
+* cod_iluminacao_domic_fam;
+* cod_calcamento_domic_fam;
+* classf;
+* Outros indicadores que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se contrbuem para uma maior acurácia do modelo.
 
-### Análise 4:
-Avaliar outras variáveis constantes nas bases do Cadastro Único, incluindo variáveis propostas a partir da engenharia de variáveis independentes (features engineering), de modo a identificar se alguma variável não incluída nas variáveis propostas inicialmente parecem contribuir de maneira significativa para a acurácia do modelo. Para tanto, serão estudadas as variáveis que compõem uma das 6 (seis) dimensões de vulnerabilidade do Índice de Vulnerabilidade das Famílias do Cadastro Único (IVCAD), conforme documentação dos indicadores do Cadastro Único apresentada na ferramenta de metadados <a href="https://wiki-sagi.cidadania.gov.br/en/home/DS/Cad/I">Documenta Wiki</a>
+### Características da família e Composição familiar: 
+Para analisar se as características da família e a composição familiar contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias** e da **Base de pessoas**:
+* dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
+* dat_atualizacao_familia - Número de dias entre 31/12/2018 e a data de atualização cadastral;
+* cod_familia_indigena_fam; 
+* ind_familia_quilombola_fam;
+* ind_parc_mds_fam: 0 no caso de não pertencer a nenhum grupo tradicional e específico, 1 no caso de pertencer a pelo menos 1;
+* qtd_pessoas: Quantidade de pessoas utilizada no cálculo da renda per capita familiar;
+No caso da composição familiar será necessário avaliar se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número abosluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia.
+* 1_infancia: nova variável construída a partir da variável "idade", de modo a identificar a situação da família em relação a ter ou não uma pessoa que esteja na 1ª infância, ou seja de 0 a 6 anos de idade;
+* crianca_adolescente: nova variável construída a partir da variável "idade", de modo a identificar a situação da família em relação a ter ou não uma pessoa com mais de 6 anos e até 17 anos de idade;
+* adultos: nova variável construída a partir da variável "idade", de modo a identificar a situação da família em relação a ter ou não uma pessoa entre 18 e 59 anos de idade;
+* idoso: nova variável construída a partir da variável "idade", de modo a identificar a situação da família em relação a ter ou não uma pessoa com 60 anos ou mais; 
+* deficiencia: nova variável construída a partir da variável "cod_deficiencia_memb" de modo a identificar a situação da família em relação a ter ou não em sua composição uma pessoa com deficiência;
+* Poderão ser testadas outras faixas etárias para avaliar se alguma parece contribuir mais para a acurácia do modelo. As faixas podem ser trabalhadas de acordo com a documentação do indicador <a href="https://wiki-sagi.cidadania.gov.br/home/DS/Cad/I/IN030">Pessoas cadastradas por faixa etária</a> disponível na ferramenta de metadados Documenta Wiki.
 
-### Análise 5:
-Serão procuradas outras bases de dados que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se estas variáveis ajudam na acurácia do modelo.
+### Escolaridade:
+Para analisar se a escolaridade dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
+* alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com mais de 10 anos sem saber ler ou escrever;
+* frequenta_escola: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com menos de 17 anos que não está na escola;
+* frequenta_escola_publica: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com menos de 17 anos que está na escola pública;
+* frequenta_escola_privada: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com menos de 17 anos que está na escola privada;
+* frequenta_escola_nunca: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com menos de 17 anos que nunca frequentou escola;
+* frequenta_escola_nunca_adulto: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com 18 anos ou mais que nunca frequentou escola;
+* cod_escola_local_memb;
+* Poderão ser pensadas e testadas variáveis a serem construídas por meio da engenharia de features, utilizando as varáveis "cod_curso_frequentou_pessoa_memb", "cod_ano_serie_frequentou_memb" e "cod_concluiu_frequentou_memb".  Para tanto, serão estudadas as variáveis que compõem as dimensões de vulnerabilidade do Índice de Vulnerabilidade das Famílias do Cadastro Único (IVCAD), "Desenvolvimento de Crianças e Adolescentes" e "Desenvolvimento na Primeira Infância" conforme documentação dos indicadores do Cadastro Único apresentada na ferramenta de metadados <a href="https://wiki-sagi.cidadania.gov.br/en/home/DS/Cad/I">Documenta Wiki</a>.
 
+### Trabalho:
+Para analisar se a condição de trabalho dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
+* trabalho_semana_adulto: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos que trabalhou na semana passada;
+* trabalho_semana_idoso: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com 60 anos ou mais que trabalhou na semana passada;
+* trabalho_semana_criança: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa menor de 18 anos que trabalhou na semana passada;
+* afastado_trabalho: nova variável combinando as variáveis "cod_afastado_trab_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos que ficou afastada do trabalho na semana passada;
+* trabalho_principal: nova variável combinando as variáveis "cod_principal_trab_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos e o seu trabalho principal;
+* trabalho_12meses_adulto: nova variável combinando as variáveis "cod_trabalho_12_meses_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos com trabalho remunerado em algum período nos último 12 meses;
+* trabalho_12meses_idoso: nova variável combinando as variáveis "cod_trabalho_12_meses_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com 60 anos ou mais com trabalho remunerado em algum período nos último 12 meses;
+* trabalho_12meses_criança: nova variável combinando as variáveis "cod_trabalho_12_meses_memb" e "idade" de modo a identificar a situação da família em relação à pessoa menor de 18 anos com trabalho remunerado em algum período nos último 12 meses;
+* meses_trabalho: nova variável combinando as variáveis "qtd_meses_12_meses_memb" e "idade" de modo a identificar a situação da família em relação ao número de meses trabalhado nos últimos 12 meses para pessoa a partir de 18 anos.
+
+  
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira
 
