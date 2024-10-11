@@ -17,6 +17,14 @@ Para tanto, a proposta do presente projeto é propor um algoritmo que, a partir 
 * Pobreza: de 0 a 178,00, considerando a faixa de pobreza do Programa Bolsa Família em 2018;
 * Baixa renda: de 178,01 a 1/2 salário-mínimo vigente em 2018, qual seja 954,00;
 * Acima de 1/2 salário-mínimo, ou seja, acima de 477,00.
+
+No Cadastro Único a renda familiar mensal utilizada para o cálculo da renda média familiar é a soma dos rendimentos brutos, ou seja, sem descontos, auferidos por todos os integrantes da família. Nesse cálculo, não são incluídos os valores referentes aos seguintes programas:
+* Benefícios e auxílios assistenciais de natureza eventual e temporária;
+* Valores oriundos de programas assistenciais de transferência de renda, com exceção do Benefício de Prestação Continuada de que trata o art. 20 da Lei nº 8.742, de 1993;
+* Rendas de natureza eventual ou sazonal, na forma estabelecida em ato do Ministro de Estado do MDS; e
+* Outros rendimentos, na forma estabelecida em ato do Ministro de Estado do MDS.
+
+O valor da renda familiar mensal e dividida então pelo número de pessoas que compõem a família, variável qtd_pessoas da **Base de Família**.
   
 O modelo objetiva auxiliar em uma maior focalização das políticas públicas sociais para as famílias que apresentam características relacionadas à maior vulnerabilidade de renda, identificando famílias que apresentam caracterísiticas não esperadas para a faixa de renda apresentada, guiando ações de qualificação do Cadastro Único.
 
