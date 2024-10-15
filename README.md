@@ -133,9 +133,9 @@ Abaixo segue o dicionário das bases utilizadas.
 
 ## Variável dependente (target)
 A variavél dependente do projeto é a vlr_renda_media_fam: Valor da renda média (per capita) da família. Foi criada uma nova variável, com a classe da faixa de renda da família, conforme se segue:
-* Classe 1: vlr_renda_media_fam >= 0 e <= 178;
-* Classe 2: vlr_renda_media_fam > 178 e <= 477;
-* Classe 3: vlr_renda_media_fam > 477.
+* Classe 1 (pobreza);
+* Classe 2 (baixa renda);
+* Classe 3 (acima 1/2 S.M.).
 
 ## Variáveis independentes (features)
 Para a seleção das variáveis independentes, serão aplicadas técnicas de Machine Learning para definição das que contribuem diretamente para a classificação mais adequada das famílias nas classes de renda. Além disso, será realizada engenharia de features para a construção de novas variáveis, a partir das existentes, que podem contribuir para a maior acurácia do modelo. 
