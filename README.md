@@ -142,7 +142,7 @@ Para a seleção das variáveis independentes, serão aplicadas técnicas de Mac
 De modo a ouvir a área de negócio, foram realizadas reuniões com a Coordenadora-Geral de Acompanhamento e Qualificação do Cadastro, do Departamento de Operação do Cadastro Único (CGAQC/DECAU). 
 A partir das contribuições da área de negócio e com o objetivo de possibilitar o exercício por todos os autores do projeto no âmbito do Bootcamp, as análises foram dividdas em grupos temáticos, conforme se segue:
 
-### Características do Responsável Familiar:
+### Características do Responsável Familiar - Mariana:
 O Responsável pela Unidadde Familiar (RUF) é a pessoa responsável por prestar as informações ao Cadastro Único em nome da família, que pode ser: 
 * Responsável Familiar (RF) - deve ser um dos componentes da família e morador do domicílio, com idade mínima de 16 (dezesseis) anos, preferencialmente mulher;
 * Representante Legal (RL) - indivíduo não membro da família e que não seja morador do domicílio, legalmente responsável por pessoas menores de dezesseis anos ou incapazes e responsável por prestar as informações ao Cadastro Único, quando não houver morador caracterizado como Responsável Familiar. Nas situações em que a família tiver o RL, este a representará e atuará em nome da família que está sendo cadastrada. Sendo assim, o RL
@@ -174,7 +174,7 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 * rf_afastado_trablho - Nova variável cruzando as variáveis "cod_afastado_trab_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ter se fastado do trabalho na semana passada e 1 para o caso de ter se afastado do trabalho;
 * rf_qtd_meses_12_meses_memb - Nova variável cruzando as variáveis "qtd_meses_12_meses_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta o número de meses que o RF trabalhou nos últimos 12 meses.
   
-### Características do domicílio:
+### Características do domicílio - Renata:
 Para analisar se as características do domicílio contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias**:
 * uf_ibge;
 * regiao_ibge;
@@ -194,7 +194,7 @@ Para analisar se as características do domicílio contribuem para a acurácia d
 * classf;
 * Outros indicadores que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se contrbuem para uma maior acurácia do modelo.
 
-### Características da família e Composição familiar: 
+### Características da família e Composição familiar - Grinaldo: 
 Para analisar se as características da família e a composição familiar contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias** e da **Base de pessoas**:
 * dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
 * dat_atualizacao_familia - Número de dias entre 31/12/2018 e a data de atualização cadastral;
@@ -210,7 +210,7 @@ No caso da composição familiar será necessário avaliar se as diferentes form
 * deficiencia: nova variável construída a partir da variável "cod_deficiencia_memb" de modo a identificar a situação da família em relação a ter ou não em sua composição uma pessoa com deficiência;
 * Poderão ser testadas outras faixas etárias para avaliar se alguma parece contribuir mais para a acurácia do modelo. As faixas podem ser trabalhadas de acordo com a documentação do indicador <a href="https://wiki-sagi.cidadania.gov.br/home/DS/Cad/I/IN030">Pessoas cadastradas por faixa etária</a> disponível na ferramenta de metadados Documenta Wiki.
 
-### Escolaridade:
+### Escolaridade - Risla:
 Para analisar se a escolaridade dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com mais de 10 anos sem saber ler ou escrever;
 * frequenta_escola: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com menos de 17 anos que não está na escola;
@@ -222,7 +222,7 @@ Para analisar se a escolaridade dos membros da familia contribuem para a acurác
 * Poderão ser pensadas e testadas variáveis a serem construídas por meio da engenharia de features, utilizando as varáveis "cod_curso_frequentou_pessoa_memb", "cod_ano_serie_frequentou_memb" e "cod_concluiu_frequentou_memb".  Para tanto, serão estudadas as variáveis que compõem as dimensões de vulnerabilidade do Índice de Vulnerabilidade das Famílias do Cadastro Único (IVCAD), "Desenvolvimento de Crianças e Adolescentes" e "Desenvolvimento na Primeira Infância" conforme documentação dos indicadores do Cadastro Único apresentada na ferramenta de metadados <a href="https://wiki-sagi.cidadania.gov.br/en/home/DS/Cad/I">Documenta Wiki</a>.
 * Além disso poderão ser incluídos indicadores escolares do município como o Ideb, por exemplo.
 
-### Trabalho:
+### Trabalho - Michelle:
 Para analisar se a condição de trabalho dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * trabalho_semana_adulto: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos que trabalhou na semana passada;
 * trabalho_semana_idoso: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com 60 anos ou mais que trabalhou na semana passada;
