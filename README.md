@@ -269,7 +269,7 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira
 
-Mariana Nogueira de Resende Sousa
+Mariana Nogueira de Resende Sousa - CGPI/DMA/SAGICAD/MDS - mariananresende@gmail.com
 
 Michela
 
