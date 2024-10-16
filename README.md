@@ -15,7 +15,7 @@ Considerando a referência de setembro/2024, existem mais de 40 milhões de fam�
 
 Para tanto, a proposta do presente projeto é propor um algoritmo que, a partir das características das família, seja possível classificar cada família em uma faixa de renda mais provável. Destaca-se que, considerando que as bases utilizadas são de 2018, os valores utilizados para a definição das faixas de renda serão as vigentes em 2018, conforme segue abaixo:
 * Pobreza: de 0 a 178,00, considerando a faixa de pobreza do Programa Bolsa Família em 2018;
-* Baixa renda: de 178,01 a 1/2 salário-mínimo vigente em 2018, qual seja 954,00;
+* Baixa renda: de 178,01 a 1/2 salário-mínimo vigente em 2018, ou seja 477,00 considerando o salário-mínimo de 954,00;
 * Acima de 1/2 salário-mínimo, ou seja, acima de 477,00.
 
 No Cadastro Único a renda familiar mensal utilizada para o cálculo da renda média familiar é a soma dos rendimentos brutos, ou seja, sem descontos, auferidos por todos os integrantes da família. Nesse cálculo, não são incluídos os valores referentes aos seguintes programas:
@@ -24,7 +24,7 @@ No Cadastro Único a renda familiar mensal utilizada para o cálculo da renda m�
 * Rendas de natureza eventual ou sazonal, na forma estabelecida em ato do Ministro de Estado do MDS; e
 * Outros rendimentos, na forma estabelecida em ato do Ministro de Estado do MDS.
 
-O valor da renda familiar mensal e dividida então pelo número de pessoas que compõem a família, variável qtd_pessoas da **Base de Família**.
+O valor da renda familiar mensal é dividida então pelo número de pessoas que compõem a família, variável 'qtd_pessoas' da **Base de Família**.
   
 O modelo objetiva auxiliar em uma maior focalização das políticas públicas sociais para as famílias que apresentam características relacionadas à maior vulnerabilidade de renda, identificando famílias que apresentam caracterísiticas não esperadas para a faixa de renda apresentada, guiando ações de qualificação do Cadastro Único.
 
@@ -36,13 +36,15 @@ O modelo objetiva auxiliar em uma maior focalização das políticas públicas s
 ## Bases de dados utilizadas
 As bases de dados utilizadas estão disponibilizadas no <a href="https://dados.gov.br/dados/conjuntos-dados/microdados-amostrais-do-cadastro-unico">Portal de Dados abertos do Governo Federal do MDS</a>.
 
-As bases são amostrais, desidentificadas, sendo as últimas bases disponíveis no portal de 2018, acessado em outubro/2024.
+As bases são amostrais, desidentificadas, sendo que as mais recentes disponíveis no portal de dados abertos, acessado em outubro/2024, são da referêcia de 2018.
 
-Uma base apresenta os dados de pessoas e a outra base os dados das famílias. É possível combinar as duas bases de dados por meio da variável id_familia: Identificador único da família para pareamento com a base de pessoas. No caso da Base famílias, os dados estão relacionados à família, sendo uma por linha. No caso da Base pessoas é uma pessoa por linha, sendo que a variável id_familia estará repetida para as pessoas que compõem a mesma família. 
+Uma base apresenta os dados de pessoas e a outra base os dados das famílias. É possível combinar as duas bases de dados por meio da variável 'id_familia': Identificador único da família para pareamento com a base de pessoas. No caso da **Base famílias**, os dados estão relacionados à família, sendo uma por linha. No caso da **Base pessoas** é uma pessoa por linha, sendo que a variável 'id_familia' está repetida para as pessoas que compõem a mesma família. 
 
 Como as bases são muito grandes, tendo a base de famílias mais de 4,8 milhões de linhas e a de pessoas mais de 12,8 milhões, foi preparada uma base amostral da base de famílias de 100 mil linhas retirando as colunas "nom_estab_assist_saude_fam", "cod_eas_fam", "nom_centro_assist_fam" e "cod_centro_assist_fam" por não serem relevantes para a construção do modelo e por apresentarem muitos valores vazios conforme imagem abaixo.
 
 ![Percentual_ausentes_base_fam](Perc_ausentes_fam.jpg)
+
+Também foram retiradas as colunas relacionadas diretamente à renda da família, pois o objetivo do projeto é identificar as características das famílias que estão mais diretamente relacionadas à faixa de renda. A inclusão dos valores recebidos estão muito diretamente relacionados à classificação da renda e não permitiriam a avaliação das demais variáveis. Desta forma, para a análise, a variável 'marc_pbf' foi retirada da **Base famílias** e as variáveis 
 
 Além disso, foram incluídas, após a coluna cd_ibge, duas novas colunas, uf_ibge e regiao_ibge, de modo a permitir a análise se essas variáveis contribuem para a acurácia do modelo.
 
@@ -57,39 +59,43 @@ Abaixo segue o dicionário das bases utilizadas.
 | Seq. | Nome da variável                 | Tipo   | Tamanho (Inteiro) | Tamanho (Decimal) | Descrição                                                                                                     |
 |------|-----------------------------------|--------|-------------------|------------------|---------------------------------------------------------------------------------------------------------------|
 | 1    | cd_ibge                          | String | 7                 |                  | Código IBGE do Município                                                                                       |
-| 1a    | uf_ibge                          | String | 2                 |              | Código IBGE da Unidade Federada  :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)** |
-| 1b    | regiao_ibge                      | String | 2                 |                  | Sigla da região da Unidade Federada :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
-| 2    | dat_cadastramento_fam             | String | 8                 |                  | Data do cadastramento da família no formato YYYY-MM-DD                                                         |
-| 3    | dat_alteracao_fam                 | Date   | 8                 |                  | Data da última alteração em qualquer campo da família no formato YYYY-MM-DD (Variável utilizada nos anos de 2014, 2015, 2016 e 2017)                 |
-| 4    | vlr_renda_media_fam               | Numeric| 9                 |                  | Valor da renda média (per capita) da família, formato NNNNNNNNN (não tem a vírgula). Ex.: Uma renda de R$ 125,00 constará na base como 125            |
-| 5    | dat_atualizacao_familia           | Date   | 8                 |                  | Data da última atualização da família dos dados considerados sensíveis à manutenção do cadastro no formato YYYY-MM-DD (2014-2017)                     |
-| 6    | dat_atual_fam                     | Date   | 8                 |                  | Data da última alteração em qualquer campo da família no formato YYYY-MM-DD (variável utilizada nos anos de 2012 e 2013)                              |
-| 7    | cod_local_domic_fam               | Numeric| 1                 |                  | Características do local onde está situado o domicílio: 1 - Urbanas, 2 - Rurais                                |
-| 8    | cod_especie_domic_fam             | Numeric| 1                 |                  | Espécie do domicílio: 1 - Particular Permanente, 2 - Particular improvisado, 3 - Coletivo                       |
-| 9    | qtd_comodos_domic_fam             | Numeric| 2                 |                  | Quantidade de cômodos do domicílio                                                                             |
-| 10   | qtd_comodos_dormitorio_fam        | Numeric| 2                 |                  | Quantidade de cômodos servindo como dormitório do domicílio                                                    |
-| 11   | cod_material_piso_fam             | Numeric| 1                 |                  | Material predominante no piso do domicílio: 1 - Terra, 2 - Cimento, 3 - Madeira aproveitada, etc.              |
-| 12   | cod_material_domic_fam            | Numeric| 1                 |                  | Material predominante nas paredes externas do domicílio: 1 - Alvenaria/tijolo com revestimento, etc.           |
-| 13   | cod_agua_canalizada_fam           | Numeric| 1                 |                  | Se o domicílio tem água encanada: 1 - Sim, 2 - Não                                                             |
-| 14   | cod_abaste_agua_domic_fam         | Numeric| 1                 |                  | Forma de abastecimento de água: 1 - Rede geral de distribuição, 2 - Poço ou nascente, 3 - Cisternas, 4 - Outra forma            |
-| 15   | cod_banheiro_domic_fam            | Numeric| 1                 |                  | Existência de banheiro: 1 - Sim, 2 - Não                                                                       |
-| 16   | cod_escoa_sanitario_domic_fam     | Numeric| 1                 |                  | Forma de escoamento sanitário: 1 - Rede coletora de esgoto ou pluvial, etc.                                    |
-| 17   | cod_destino_lixo_domic_fam        | Numeric| 1                 |                  | Forma de coleta do lixo: 1 - É coletado diretamente, 2 - É coletado indiretamente, etc.                        |
-| 18   | cod_iluminacao_domic_fam          | Numeric| 1                 |                  | Tipo de iluminação: 1 - Elétrica com medidor próprio, 2 - Elétrica com medidor comunitário, etc.               |
-| 19   | cod_calcamento_domic_fam          | Numeric| 1                 |                  | Calçamento: 1 - Total, 2 - Parcial, 3 - Não existe                                                             |
+| 1a    | uf_ibge                          | Numeric | 2                 |              | Código IBGE da Unidade Federada: 12	- AC, 27 - AL, 13	- AM, 16 - AP, 29 -	BA, 23 - CE, 53 -	DF, 32	- ES, 52 - GO, 21 -	MA, 31 -	MG, 50 -	MS, 51	- MT, 15 - PA, 25 -	PB, 26 -	PE, 22	- PI, 41 -	PR, 33 -	RJ, 24	- RN, 11 - RO, 14 -	RR, 43 -	RS, 42 -	SC, 28 -	SE, 35 -	SP, 17 - TO  :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)** |
+| 1b    | regiao_ibge                      | Numeric | 2                 |                  | Região da Unidade Federada: 1 - Norte, 2 - Nordeste, 3 - Centro-Oeste, 4 - Sudeste, 5 - Sul :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
+| 2    | dat_cadastramento_fam             | String | 8                 |                  | Data do cadastramento da família no formato YYYY-MM-DD  :exclamation::heavy_exclamation_mark:**(Coluna excluída na base amostral)**               |
+| 3    | dat_alteracao_fam                 | Date   | 8                 |                  | Data da última alteração em qualquer campo da família no formato YYYY-MM-DD (Variável utilizada nos anos de 2014, 2015, 2016 e 2017)  :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**    |
+| 4    | vlr_renda_media_fam               | Numeric| 9                 |                  | Valor da renda média (per capita) da família, formato NNNNNNNNN (não tem a vírgula). Ex.: Uma renda de R$ 125,00 constará na base como 125   :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
+| 5    | dat_atualizacao_familia           | Date   | 8                 |                  | Data da última atualização da família dos dados considerados sensíveis à manutenção do cadastro no formato YYYY-MM-DD (2014-2017)    :exclamation::heavy_exclamation_mark:**(Coluna excluída na base amostral)**      |
+| 6    | dat_atual_fam                     | Date   | 8                 |                  | Data da última alteração em qualquer campo da família no formato YYYY-MM-DD (variável utilizada nos anos de 2012 e 2013)         :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**     |
+| 7    | cod_local_domic_fam               | Numeric| 1                 |                  | Características do local onde está situado o domicílio: 1 - Urbanas, 2 - Rurais, 9 - Nenhuma das respostas anteriores   |
+| 8    | cod_especie_domic_fam             | Numeric| 1                 |                  | Espécie do domicílio: 1 - Particular Permanente, 2 - Particular improvisado, 3 - Coletivo, 9 - Nenhuma das respostas anteriores    |
+| 9    | qtd_comodos_domic_fam             | Numeric| 2                 |                  | Quantidade de cômodos do domicílio ou -1 quando o campo não se aplica                                          |
+| 10   | qtd_comodos_dormitorio_fam        | Numeric| 2                 |                  | Quantidade de cômodos servindo como dormitório do domicílio ou -1 quando o campo não se aplica        |
+| 11   | cod_material_piso_fam             | Numeric| 1                 |                  | Material predominante no piso do domicílio: 1 - Terra, 2 - Cimento, 3 - Madeira aproveitada, etc. ou -1 quando o campo não se aplica   |
+| 12   | cod_material_domic_fam            | Numeric| 1                 |                  | Material predominante nas paredes externas do domicílio: 1 - Alvenaria/tijolo com revestimento, etc. ou -1 quando o campo não se aplica  |
+| 13   | cod_agua_canalizada_fam           | Numeric| 1                 |                  | Se o domicílio tem água encanada: 1 - Sim, 2 - Não  ou -1 quando o campo não se aplica   |
+| 14   | cod_abaste_agua_domic_fam         | Numeric| 1                 |                  | Forma de abastecimento de água: 1 - Rede geral de distribuição, 2 - Poço ou nascente, 3 - Cisternas, 4 - Outra forma ou -1 quando o campo não se aplica    |
+| 15   | cod_banheiro_domic_fam            | Numeric| 1                 |                  | Existência de banheiro: 1 - Sim, 2 - Não   ou -1 quando o campo não se aplica            |
+| 16   | cod_escoa_sanitario_domic_fam     | Numeric| 1                 |                  | Forma de escoamento sanitário: 1 - Rede coletora de esgoto ou pluvial, etc.  ou -1 quando o campo não se aplica     |
+| 17   | cod_destino_lixo_domic_fam        | Numeric| 1                 |                  | Forma de coleta do lixo: 1 - É coletado diretamente, 2 - É coletado indiretamente, etc.  ou -1 quando o campo não se aplica     |
+| 18   | cod_iluminacao_domic_fam          | Numeric| 1                 |                  | Tipo de iluminação: 1 - Elétrica com medidor próprio, 2 - Elétrica com medidor comunitário, etc.  ou -1 quando o campo não se aplica   |
+| 19   | cod_calcamento_domic_fam          | Numeric| 1                 |                  | Calçamento: 1 - Total, 2 - Parcial, 3 - Não existe   ou -1 quando o campo não se aplica  |
 | 20   | cod_familia_indigena_fam          | Numeric| 1                 |                  | Família indígena: 1 - Sim, 2 - Não                                                                             |
 | 21   | ind_familia_quilombola_fam        | Numeric| 1                 |                  | Família quilombola: 1 - Sim, 2 - Não                                                                           |
 | 22   | nom_estab_assist_saude_fam        | String | 70                |                  | Nome do estabelecimento EAS/MS   :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**     |
 | 23   | cod_eas_fam                       | String | 12                |                  | Código do estabelecimento EAS/MS  :exclamation::heavy_exclamation_mark:  **(Coluna excluída na base amostral)**    |
 | 24   | nom_centro_assist_fam             | String | 70                |                  | Nome do CRAS/CREAS :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**            |
 | 25   | cod_centro_assist_fam             | String | 12                |                  | Código do CRAS/CREAS :exclamation::heavy_exclamation_mark:  **(Coluna excluída na base amostral)**     |
-| 26   | ind_parc_mds_fam                  | Numeric| 3                 |                  | Grupos tradicionais e específicos: 101 Família Cigana, 201 Família Extrativista, 202 Família de Pescadores, etc.|
+| 26   | ind_parc_mds_fam                  | Numeric| 3                 |                  | Grupos tradicionais e específicos: 101 Família Cigana, 201 Família Extrativista, 202 Família de Pescadores, 203 Família pertencente a Comunidade de Terreiro, 204 Família Ribeirinha, 205 Família de Agricultores Familiares, 301 Família Assentada da Reforma Agrária, 302 Família beneficiária do Programa Nacional de Crédito Fundiário, 303 Família Acampada, 304 Família Atingida por Empreendimentos de Infraestrutura, 305 Família de Preso do Sistema Carcerário, 306 Família de Catadores de Material Reciclável, 000 Nenhuma ou 9 - Nenhuma das respostas anteriores|
 | 27   | peso_fam                          | Numeric| 1                 | 14               | Peso calculado da família                                                                                      |
 | 28   | id_familia                        | Numeric| 8                 |                  | Identificador único da família para pareamento com a base de pessoas                                           |
 | 29   | estrato                           | Numeric| 1                 |                  | Grandes grupos de municípios, de acordo com a quantidade de famílias cadastradas: 1 - GM1 (101 a 5.000 famílias), etc. |
-| 30   | classf                            | Numeric| 1                 |                  | Subdivisão pela Unidade Federativa e divisão administrativa: 1 - Capital, 2 - Região Metropolitana (RM) ou Região Integrada de Desenvolvimento (RIDE), 3 - Outros |
+| 30   | classf                            | Numeric| 1                 |                  | Subdivisão pela Unidade Federativa e divisão administrativa: 1 - Capital, 2 - Região Metropolitana (RM) ou Região Integrada de Desenvolvimento (RIDE), 3 - Outros          |
 | 31   | qtd_pessoas                       | Numeric| 1                 |                  | Quantidade de pessoas utilizada no cálculo da renda per capita familiar – variável calculada pelo sistema        |
-| 32   | marc_pbf                          | Numeric| 1                 |                  | Marcação se a família é beneficiária do Programa Bolsa Família: 0 – Não, 1 – Sim                               |
+| 32   | marc_pbf                          | Numeric| 1                 |                  | Marcação se a família é beneficiária do Programa Bolsa Família: 0 – Não, 1 – Sim **(Coluna excluída na base amostral)**  |
+| 33 | dias_cadastramento                  | Numeric | 1 a 4            |                  | Número de dias entre 31/12/2018 e a data dat_cadastramento_fam  :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
+| 34 | dias_atualizacao                   | Numeric | 1 a 4            |                  | Número de dias entre 31/12/2018 e a data dat_atualizacao_familia  :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
+| 35 | classe_renda                      | Numeric  | 1                |                   | Classificação da faixa de renda da família, calculada a partir do vlr_renda_media_fam: 0 - pobreza, 1 - baixa renda, 2 - acima de 1/2 S.M. :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
+
 
 ### Base pessoas
 
@@ -115,27 +121,52 @@ Abaixo segue o dicionário das bases utilizadas.
 | 18   | cod_afastado_trab_memb           | Numeric | 1                 |                   | Pessoa afastada na semana passada: 1 - Sim, 2 - Não                                                                                                  |
 | 19   | cod_agricultura_trab_memb        | Numeric | 1                 |                   | É atividade extrativista: 1 - Sim, 2 - Não                                                                                                           |
 | 20   | cod_principal_trab_memb          | Numeric | 2                 |                   | Função principal: 1 - Trabalhador por conta própria, 2 - Trabalhador temporário em área rural, 3 - Empregado sem carteira de trabalho assinada, ...   |
-| 21   | val_remuner_emprego_memb         | Numeric | 5                 |                   | Valor da remuneração no formato NNNNN (sem casas decimais). Ex: uma remuneração de R$ 125,00 constará na base como 125                                |
+| 21   | val_remuner_emprego_memb         | Numeric | 5                 |                   | Valor da remuneração no formato NNNNN (sem casas decimais). Ex: uma remuneração de R$ 125,00 constará na base como 125         :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)** |
 | 22   | cod_trabalho_12_meses_memb       | Numeric | 1                 |                   | Pessoa com trabalho remunerado em algum período nos últimos 12 meses: 1 - Sim, 2 - Não                                                               |
 | 23   | qtd_meses_12_meses_memb          | Numeric | 2                 |                   | Quantidade de meses trabalhados nos últimos 12 meses                                                                                                 |
-| 24   | val_renda_bruta_12_meses_memb    | Numeric | 5                 |                   | Valor de remuneração bruta no formato NNNNN (sem casas decimais). Ex: uma remuneração de R$ 125,00 constará na base como 125                          |
-| 25   | val_renda_doacao_memb            | Numeric | 5                 |                   | Valor recebido de doação no formato NNNNN (sem casas decimais). Ex: uma renda de R$ 125,00 constará na base como 125                                  |
-| 26   | val_renda_aposent_memb           | Numeric | 5                 |                   | Valor recebido de aposentadoria no formato NNNNN (sem casas decimais). Ex: uma remuneração de R$ 125,00 constará na base como 125                     |
-| 27   | val_renda_seguro_desemp_memb     | Numeric | 5                 |                   | Valor recebido de seguro desemprego no formato NNNNN (sem casas decimais). Ex: um valor de R$ 125,00 constará na base como 125                        |
-| 28   | val_renda_pensao_alimen_memb     | Numeric | 5                 |                   | Valor recebido de pensão alimentícia no formato NNNNN (sem casas decimais). Ex: uma renda de R$ 125,00 constará na base como 125                      |
-| 29   | val_outras_rendas_memb           | Numeric | 5                 |                   | Valor recebido de outras fontes no formato NNNNN (sem casas decimais). Ex: uma renda de R$ 125,00 constará na base como 125                           |
-| 30   | peso.fam                        | Numeric | 1                 | 14                | Peso calculado da família                                                                                                                            |
+| 24   | val_renda_bruta_12_meses_memb    | Numeric | 5                 |                   | Valor de remuneração bruta no formato NNNNN (sem casas decimais). Ex: uma remuneração de R$ 125,00 constará na base como 125   :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
+| 25   | val_renda_doacao_memb            | Numeric | 5                 |                   | Valor recebido de doação no formato NNNNN (sem casas decimais). Ex: uma renda de R$ 125,00 constará na base como 125           :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
+| 26   | val_renda_aposent_memb           | Numeric | 5                 |                   | Valor recebido de aposentadoria no formato NNNNN (sem casas decimais). Ex: uma remuneração de R$ 125,00 constará na base como 125  :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
+| 27   | val_renda_seguro_desemp_memb     | Numeric | 5                 |                   | Valor recebido de seguro desemprego no formato NNNNN (sem casas decimais). Ex: um valor de R$ 125,00 constará na base como 125   :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)** |
+| 28   | val_renda_pensao_alimen_memb     | Numeric | 5                 |                   | Valor recebido de pensão alimentícia no formato NNNNN (sem casas decimais). Ex: uma renda de R$ 125,00 constará na base como 125    :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
+| 29   | val_outras_rendas_memb           | Numeric | 5                 |                   | Valor recebido de outras fontes no formato NNNNN (sem casas decimais). Ex: uma renda de R$ 125,00 constará na base como 125       :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
+| 30   | peso.fam                        | Numeric | 1                 | 14                | Peso calculado da família                                                                                                         :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**  |
 | 31   | peso.pes                        | Numeric | 1                 | 14                | Peso calculado da pessoa                                                                                                                             |
 | 32   | id_familia                      | Numeric | 8                 |                   | Identificador único da família de vinculação da pessoa para pareamento com a base de famílias                                                        |
 | 33   | estrato                         | Numeric | 1                 |                   | São grandes grupos de municípios, de acordo com a quantidade de famílias cadastradas: 1 - GM1 (101 A 5.000 famílias), 2 - GM2 (5.001 ou mais famílias)  :exclamation::heavy_exclamation_mark: **(Coluna excluída na base amostral)**   |
 | 34   | classf                          | Numeric | 1                 |                   | Subdivisão pela Unidade Federativa e divisão administrativa: 1 - Capital, 2 - Região Metropolitana (RM) ou Região Integrada de Desenvolvimento (RIDE) :exclamation::heavy_exclamation_mark:  **(Coluna excluída na base amostral)**   |
 
+## Lipeza das bases
+Tanto na **Base famílias**, quanto na **Base pessoas** existe um número considerável de valores vazios considerando as regras de preenchimento do formulário do Cadastro Único. Assim, foi necessário olhar para as regras de preenchimento do formulário do Cadastro Único, com base no Manual do Entrevistador do Cadastro Único, de modo a identificar os valores vazios pelo fato de não serem de preenchimento obrigatório.
+Assim foram realizadas as seguintes limpezas dos valores NaN:
+
+### Base famílias
+#### Campos relacionados às características do domicílio:
+Os campos 'qtd_comodos_domic_fam', 'qtd_comodos_dormitorio_fam', 'cod_material_piso_fam', 'cod_material_domic_fam', 'cod_agua_canalizada_fam', 'cod_abaste_agua_domic_fam', 'cod_banheiro_domic_fam', 'cod_escoa_sanitario_domic_fam', 'cod_destino_lixo_domic_fam', 'cod_iluminacao_domic_fam', 'cod_calcamento_domic_fam' só são de preenchimento obrigatório no caso da resposta ter sido "1- Particular permamente" no campo 'cod_especie_domic_fam'. Sendo assim, quando o campo 'cod_especie_domic_fam' é diferente de 1, os valores dos campos relacionados às características do domicílio foi preenchido com **-1**.
+#### Campo relacionado ao escoamento sanitário:
+O campo 'cod_escoa_sanitario_domic_fam' só é de preenchimento obrigatório quando o campo 'cod_banheiro_domic_fam' é preenchido com "1 - Sim". Desta forma, quando o campo 'cod_banheiro_domic_fam' é igual a 2 (ou seja, não possui banheiro), o valor do campo 'cod_escoa_sanitario_domic_fam' foi preenchido com **-1**.
+### Campo relacionado à família quilombola:
+O campo 'ind_familia_quilombola_fam' só deve ser preenchido caso o campo 'cod_familia_indigena_fam' for "2 - Não". Assim, quando o campo 'cod_familia_indigena_fam' é igual a 1 (ou seja, a família for indígena), o valor do campo 'ind_familia_quilombola_fam' foi marcado como **2**, ou seja, a família não é quilombola.
+### Campos relacionados ao local do domicílio e à espécie do domicílio:
+Foi identificado que os valores vazios dos campos 'cod_especie_domic_fam' e 'cod_local_domic_fam' coincidem, ou seja, quando um valor é vazio na campo 'cod_especie_domic_fam' também é vazio no campo 'cod_local_domic_fam'. Na base de dados amostral de 2018 disponível no portal de dados abertos, não tem a marcação se a família vive em situação de rua. No Manual do entrevistador há a orientação de que, caso a família esteja em situação de rua, o bloco 2 - características do domicílio não deve ser preenchido, pois existe um cadastramento diferenciado. Desta forma, este caso de valores ausentes pode estar relacionado à situação de rua. De modo a tentar captar se essa condição interfere no modelo, os valores dos dois campos foram preenchidos com **9**, representando nenhuma das outras repostas.
+### Campos relacionadas à Grupos tradicionais e específicos
+O campo 'ind_parc_mds_fam' está relacionado à marcação de grupos tradicionais e específicos para além de indígena, quilombola, situação de rua ou resgatados do trabalho análogo ao de escravo. Foi avaliado se os valores ausentes estavam relacionados à marcação de indígena ou quilombola, ou ao valor 9 para 'cod_especie_domic_fam' e 'cod_local_domic_fam' criado na tentativa de captar as famílias em situação de rua. Não foi identificado o motivo dos valores vazios. Assim, de modo a tentar captar se a ausência de marcação deste campo pode representar alguma situação que impacte no modelo, os valores vazios foram preenchidos com **9**, representando nenhuma das outras repostas.
+### Valores vazios remanescentes
+Após todas as limpezas descritas acima, ficou um resquício insignificantes de linhas com valores vazios que foram excluídas da base:
+* qtd_comodos_domic_fam         41
+* qtd_comodos_dormitorio_fam    10
+* classe_renda                   3
+
+### Base pessoas
+
+
+
 
 ## Variável dependente (target)
-A variavél dependente do projeto é a vlr_renda_media_fam: Valor da renda média (per capita) da família. Foi criada uma nova variável, com a classe da faixa de renda da família, conforme se segue:
-* Classe 1 (pobreza);
-* Classe 2 (baixa renda);
-* Classe 3 (acima 1/2 S.M.).
+A variavél dependente do projeto é classe_renda:
+* Classe 0 (pobreza);
+* Classe 1 (baixa renda);
+* Classe 2 (acima 1/2 S.M.).
 
 ## Variáveis independentes (features)
 Para a seleção das variáveis independentes, serão aplicadas técnicas de Machine Learning para definição das que contribuem diretamente para a classificação mais adequada das famílias nas classes de renda. Além disso, será realizada engenharia de features para a construção de novas variáveis, a partir das existentes, que podem contribuir para a maior acurácia do modelo. 
