@@ -212,31 +212,32 @@ O Responsável pela Unidadde Familiar (RUF) é a pessoa responsável por prestar
 * Representante Legal (RL) - indivíduo não membro da família e que não seja morador do domicílio, legalmente responsável por pessoas menores de dezesseis anos ou incapazes e responsável por prestar as informações ao Cadastro Único, quando não houver morador caracterizado como Responsável Familiar. Nas situações em que a família tiver o RL, este a representará e atuará em nome da família que está sendo cadastrada. Sendo assim, o RL
 que será entrevistado para prestar as informações da família e de seus integrantes. No momento da entrevista, as informações de todas as pessoas da família devem ser prestadas pelo RUF.
 
-De modo a avaliar se as características do RF contribuem para a acurácia do modelo, serão incluídas, pelo menos, as seguintes varáveis no modelo da **Base Pessoas**:
-* rf_mulher - Nova variável cruzando as variáveis "cod_sexo_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser mulher e 1 para o caso de ser mulher;
-* rf_branca - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Branca e 1 para o caso de ser branca;
-* rf_preta - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 2 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Preta e 1 para o caso de ser Preta;
-* rf_amarela - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 3 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Amarela e 1 para o caso de ser Amarela;
-* rf_parda - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 4 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Parda e 1 para o caso de ser Parda;
-* rf_indigena - Nova variável cruzando as variáveis "cod_raca_cor_pessoa" e "cod_parentesco_rf_pessoa", para o caso de resposta 5 para a variável "cod_raca_cor_pessoa" e 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ser Indígena e 1 para o caso de ser Indígena;
-* rf_deficiencia - Nova variável cruzando as variáveis "cod_deficiencia_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta 0 para o caso do RF não ter deficiência e 1 para o caso de ter;
-* rf_ler_escrever - Nova variável cruzando as variáveis "cod_sabe_ler_escrever_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta 0 para o caso do RF não saber ler e escrever e 1 para o caso do RF saber ler ou escrever;
-* rf_escolaridade_creche - Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 1 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_pre_escolar - Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 2 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_alfabetizacao - Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 3 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_fund1 -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 4 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_fund2 -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 5 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_fund9anos -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 6 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_fund1_EJA -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 10 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_fund2_EJA -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 11 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_supletivo -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 12 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_superior -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 13 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_alfabetizacao_adulto -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 14 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_escolaridade_alfabetizacao_nenhum -  Nova variável cruzando as variáveis "cod_curso_frequentou_pessoa_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa" e 15 "cod_curso_frequentou_pessoa_memb", sendo 0 para o caso de não se enqaudrar nesta categoria e 1 para o caso de se enquadrar;
-* rf_curso_concluido - Nova variável cruzando as variáveis "cod_concluiu_frequentou_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso de não ter concluído e 1 para o caso de ter concluído;
-* rf_trabalhou - Nova variável cruzando as variáveis "cod_trabalhou_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ter trabalhado na semana passada e 1 para o caso de ter trabalhado;
-* rf_afastado_trablho - Nova variável cruzando as variáveis "cod_afastado_trab_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo 0 para o caso do RF não ter se fastado do trabalho na semana passada e 1 para o caso de ter se afastado do trabalho;
-* rf_qtd_meses_12_meses_memb - Nova variável cruzando as variáveis "qtd_meses_12_meses_memb" e "cod_parentesco_rf_pessoa", para o caso de resposta 1 para a variável "cod_parentesco_rf_pessoa", sendo a resposta o número de meses que o RF trabalhou nos últimos 12 meses.
+De modo a avaliar se as características do RF contribuem para a acurácia do modelo, serão incluídas as seguintes variáveis no modelo da **Base Pessoas** para 'cod_parentesco_rf_pessoa' igual ao 1, ou seja, "Pessoa Responsável pela Unidade Familiar":
+* cod_sexo_pessoa;
+* idade;
+* cod_raca_cor_pessoa;
+* cod_local_nascimento_pessoa;
+* cod_certidao_registrada_pessoa;
+* cod_deficiencia_memb;
+* cod_sabe_ler_escrever_memb;
+* ind_frequenta_escola_memb;
+* cod_escola_local_memb;
+* cod_curso_frequenta_memb;
+* cod_ano_serie_frequenta_memb;
+* cod_curso_frequentou_pessoa_memb;
+* cod_ano_serie_frequentou_memb;
+* cod_concluiu_frequentou_memb;
+* cod_trabalhou_memb;
+* cod_afastado_trab_memb;
+* cod_agricultura_trab_memb;
+* cod_principal_trab_memb;
+* cod_trabalho_12_meses_memb;
+* qtd_meses_12_meses_memb;
+* estrato;
+* classf.
+
+
+
   
 ### Características do domicílio - Renata:
 Para analisar se as características do domicílio contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias**:
