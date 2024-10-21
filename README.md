@@ -238,7 +238,7 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 
 #### Resultado da análise
 Foi realizada a análise das variáveis relacionadas ao responsável familiar a partir da base amostral de pessoas, filtrando 'cod_parentesco_rf_pessoa' igual a 1. Para tanto, foi gerada uma matriz de correlação das variáveis, conforme figura abaixo.
-Figura
+![Matriz_correlacao](https://github.com/user-attachments/assets/0096bd1b-da05-4507-8911-4429fc256914)
 
 A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si, de modo a evitar a:
 * Multicolinearidade, que ocorre quando duas ou mais variáveis independentes em um modelo têm uma correlação forte entre si. Quando isso acontece, torna-se difícil para o modelo determinar o impacto individual de cada variável nas previsões, pois elas trazem informações muito semelhantes. Isso pode inflar os coeficientes de regressão em modelos lineares, tornando as estimativas menos confiáveis. O modelo se torna sensível a pequenas mudanças nos dados, resultando em coeficientes instáveis, que podem variar bastante se o conjunto de dados for alterado, comprometendo a interpretabilidade e a precisão do modelo.
@@ -287,9 +287,7 @@ Posteriormente foram identificadas as variáveis independentes que mais contribu
 
 Abaixo, segue gráfico com a análise da importância de todas as features para o modelo CatBoost.
 
-Fig
-
-
+![Importancia_features](https://github.com/user-attachments/assets/1ec7761a-0b6f-4ac8-91b2-90458404f11d)
 
   
 ### Características do domicílio - Renata:
