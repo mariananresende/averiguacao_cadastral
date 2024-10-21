@@ -232,9 +232,7 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 * cod_agricultura_trab_memb;
 * cod_principal_trab_memb;
 * cod_trabalho_12_meses_memb;
-* qtd_meses_12_meses_memb;
-* estrato;
-* classf.
+* qtd_meses_12_meses_memb.
 
 #### Resultado da análise
 Foi realizada a análise das variáveis relacionadas ao responsável familiar a partir da base amostral de pessoas, filtrando 'cod_parentesco_rf_pessoa' igual a 1. Para tanto, foi gerada uma matriz de correlação das variáveis, conforme figura abaixo.
@@ -289,6 +287,48 @@ Abaixo, segue gráfico com a análise da importância de todas as features para 
 
 ![Importancia_features](https://github.com/user-attachments/assets/1ec7761a-0b6f-4ac8-91b2-90458404f11d)
 
+Posteriormente, considerando que a variável target está desbalanceada, tendo 58% de famílias da amostra na classe 0, 21% na classe 1 e 20% na classe 2, foi feito um balanceamento aumentando a amostra para as classes 1 e 2, usando a estratégia de criar amostras sintéticas, e a redução de amostras da classe 0. Após o balanceamento, observou-se os seguintes resultados de cada modelo.
+* Melhores hiperparâmetros para DecisionTree (usando dados balanceados): {'classifier__max_depth': 7, 'classifier__min_samples_split': 5}
+* Melhores hiperparâmetros para RandomForest (usando dados balanceados): {'classifier__max_depth': 20, 'classifier__n_estimators': 200}
+* Melhores hiperparâmetros para XGBoost (usando dados balanceados): {'classifier__learning_rate': 0.1, 'classifier__max_depth': 5, 'classifier__n_estimators': 300}
+* Melhores hiperparâmetros para CatBoost (usando dados balanceados): {'classifier__depth': 5, 'classifier__iterations': 500, 'classifier__learning_rate': 0.1}
+  
+| DecisionTree - balanceado | RandomForest - balanceado | XGBoost - balanceado | CatBoost - balanceado |
+| ------ | ----- | ----- | ----- |
+|  F1 Score: 0.59 | F1 Score: 0.65 | F1 Score: 0.62 | F1 Score: 0.61 |
+ | Acurácia: 0.62 |  Acurácia: 0.66 | Acurácia: 0.63 | F1 Score: 0.61 |
+
+Em relação às features mais importantes, após o balanceamento, segue o resumo do que foi observado:
+* Features que estão entre as cinco mais importantes em todos os modelos, antes e depois do balanceamento:
+  * idade
+  * cod_principal_trab_memb
+  * cod_deficiencia_memb
+* Demais features:
+  * cod_sexo_pessoa:
+    * Entre as 5 mais importantes antes do balanceamento para os modelos RandomForest e CatBoost;
+    * Entre as 5 mais importantes depois do balanceamento para os modelos DecisionTree, RandomForest, XGBoost e CatBoost.
+  * cod_agricultura_trab_memb:
+    * Entre as 5 mais importantes antes do balanceamento para os modelos RandomForest e CatBoost;
+    * Entre as 5 mais importantes depois do balanceamento para os modelos DecisionTree e XGBoost.
+  * cod_trabalhou_memb:
+    * Entre as 5 mais importantes antes do balanceamento para o modelo DecisionTree;
+    * Entre as 5 mais importantes depois do balanceamento para o modelo CatBoost.
+  * cod_curso_frequentou_pessoa_memb:
+    * Entre as 5 mais importantes antes do balanceamento para o modelo XGBoost;
+    * Não está entre as 5 mais importantes depois do balanceamento para nenhum modelo.
+  * cod_raca_cor_pessoa
+    * Não está entre as 5 mais importantes antes do balancemaento para nenhum modelo;
+    * Entre as 5 mais importantes após balancemaento para o modelo RandomForest.
+  
+Desta forma, de modo a construir um dataframe final, com as variáveis que serão utilizadas no modelo preditivo, serão usadas todas as veriáveis que figuram dentre as 5 mais importantes antes e/ou após o balancamento, relacionadas ao **Responsável familiar**: 
+* idade
+* cod_principal_trab_memb
+* cod_deficiencia_memb
+* cod_sexo_pessoa  
+* cod_agricultura_trab_memb
+* cod_trabalhou_memb
+* cod_curso_frequentou_pessoa_memb
+* cod_raca_cor_pessoa 
   
 ### Características do domicílio - Renata:
 Para analisar se as características do domicílio contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias**:
