@@ -212,7 +212,7 @@ O Responsável pela Unidadde Familiar (RUF) é a pessoa responsável por prestar
 * Representante Legal (RL) - indivíduo não membro da família e que não seja morador do domicílio, legalmente responsável por pessoas menores de dezesseis anos ou incapazes e responsável por prestar as informações ao Cadastro Único, quando não houver morador caracterizado como Responsável Familiar. Nas situações em que a família tiver o RL, este a representará e atuará em nome da família que está sendo cadastrada. Sendo assim, o RL
 que será entrevistado para prestar as informações da família e de seus integrantes. No momento da entrevista, as informações de todas as pessoas da família devem ser prestadas pelo RUF.
 
-De modo a avaliar se as características do RF contribuem para a acurácia do modelo, serão incluídas as seguintes variáveis no modelo da **Base Pessoas** para 'cod_parentesco_rf_pessoa' igual ao 1, ou seja, "Pessoa Responsável pela Unidade Familiar":
+De modo a avaliar se as características do RF contribuem para a acurácia do modelo, serão incluídas as seguintes variáveis no modelo da **Base Pessoas** para 'cod_parentesco_rf_pessoa' igual a 1, ou seja, "Pessoa Responsável pela Unidade Familiar":
 * cod_sexo_pessoa;
 * idade;
 * cod_raca_cor_pessoa;
@@ -235,6 +235,59 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 * qtd_meses_12_meses_memb;
 * estrato;
 * classf.
+
+#### Resultado da análise
+Foi realizada a análise das variáveis relacionadas ao responsável familiar a partir da base amostral de pessoas, filtrando 'cod_parentesco_rf_pessoa' igual a 1. Para tanto, foi gerada uma matriz de correlação das variáveis, conforme figura abaixo.
+Figura
+
+A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si, de modo a evitar a:
+* Multicolinearidade, que ocorre quando duas ou mais variáveis independentes em um modelo têm uma correlação forte entre si. Quando isso acontece, torna-se difícil para o modelo determinar o impacto individual de cada variável nas previsões, pois elas trazem informações muito semelhantes. Isso pode inflar os coeficientes de regressão em modelos lineares, tornando as estimativas menos confiáveis. O modelo se torna sensível a pequenas mudanças nos dados, resultando em coeficientes instáveis, que podem variar bastante se o conjunto de dados for alterado, comprometendo a interpretabilidade e a precisão do modelo.
+* Redundância de Informação, pois incluir variáveis redundantes não acrescenta novas informações ao modelo e pode, inclusive, aumentar o ruído. Em vez de contribuir para a previsão, elas podem apenas aumentar a complexidade do modelo sem melhorar seu desempenho, podendo levar a um ajuste excessivo (overfitting), onde o modelo se adapta muito bem aos dados de treino, mas não generaliza bem para novos dados.
+* Complexidade do Modelo, ao usar um número excessivo de variáveis para descrever o comportamento do target, tornando o modelo difícel de interpretar. Um modelo mais simples é preferível, pois facilita a interpretação e o entendimento dos fatores que influenciam as previsões. Remover variáveis com alta correlação contribui para uma análise mais clara e objetiva.
+* Impacto no Tempo de Treinamento, pois cada variável utilizada em um modelo afeta o tempo necessário para treinamento. Assim, variáveis redundantes aumentam o número de cálculos e a complexidade computacional, tornando o processo de treinamento mais lento. Eliminar variáveis com alta correlação reduz o tempo de processamento e otimiza o desempenho do modelo, sem perder significativamente a capacidade de previsão.
+
+Assim, foram retiradas do dataframe as variáveis: 'cod_afastado_trab_memb', 'qtd_meses_12_meses_memb' e 'cod_trabalho_12_meses_memb'.
+
+Após essa etapa, foram testados quatro modelos preditivos que são indicados para modelos com variáveis numéricas categóricas e quantitativas. Após o treinamento dos modelos e busca de hiperparâmetros, foram indentificados os seguites resultados para cada um dos modelos:
+* Melhores hiperparâmetros para DecisionTree: {'classifier__max_depth': 7, 'classifier__min_samples_split': 10}
+* Melhores hiperparâmetros para RandomForest: {'classifier__max_depth': 10, 'classifier__n_estimators': 100}
+* Melhores hiperparâmetros para XGBoost: {'classifier__learning_rate': 0.1, 'classifier__max_depth': 5, 'classifier__n_estimators': 300}
+* Melhores hiperparâmetros para CatBoost: {'classifier__depth': 5, 'classifier__iterations': 500, 'classifier__learning_rate': 0.1}
+
+| DecisionTree | RandomForest | XGBoost | CatBoost |
+| ----- | ------ | ------- | ------- |
+|  F1 Score: 0.58 |  F1 Score: 0.57 | F1 Score: 0.58 | F1 Score: 0.58 |
+ | Acurácia: 0.71 | Acurácia: 0.71 | Acurácia: 0.72 |   Acurácia: 0.72 |
+
+Posteriormente foram identificadas as variáveis independentes que mais contribuíram para cada um dos modelos estudados, conforme listagem abaixo das 5 features mais importantes:
+* As 5 Features mais importantes para o modelo DecisionTree e a sua importância:
+  * idade - 0.134895;
+  * cod_principal_trab_memb - 0.067074;
+  * cod_trabalhou_memb - 0.022994;
+  * cod_deficiencia_memb - 0.019315;
+  * cod_curso_frequenta_memb -  0.005036.
+* As 5 Features mais importantes para o modelo RandomForest e a sua importância:
+  * idade - 0.132884;
+  * cod_principal_trab_memb - 0.049982;
+  * cod_deficiencia_memb - 0.010507;
+  * cod_agricultura_trab_memb - 0.008699;
+  * cod_sexo_pessoa - 0.006098.
+* As 5 Features mais importantes para o modelo XGBoost:
+  * idade - 0.145930;
+  * cod_principal_trab_memb - 0.060059;
+  * cod_deficiencia_memb - 0.012771;
+  * cod_agricultura_trab_memb - 0.010870;
+  * cod_curso_frequentou_pessoa_memb - 0.005735.
+* As 5 Features mais importantes para o modelo CatBoost:
+  * idade - 0.149101;
+  * cod_principal_trab_memb - 0.059360;
+  * cod_deficiencia_memb - 0.013621;
+  * cod_agricultura_trab_memb - 0.010150;
+  * cod_sexo_pessoa - 0.005751.
+
+Abaixo, segue gráfico com a análise da importância de todas as features para o modelo CatBoost.
+
+Fig
 
 
 
