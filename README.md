@@ -366,6 +366,228 @@ No caso da composição familiar será necessário avaliar se as diferentes form
 * deficiencia: nova variável construída a partir da variável "cod_deficiencia_memb" de modo a identificar a situação da família em relação a ter ou não em sua composição uma pessoa com deficiência;
 * Poderão ser testadas outras faixas etárias para avaliar se alguma parece contribuir mais para a acurácia do modelo. As faixas podem ser trabalhadas de acordo com a documentação do indicador <a href="https://wiki-sagi.cidadania.gov.br/home/DS/Cad/I/IN030">Pessoas cadastradas por faixa etária</a> disponível na ferramenta de metadados Documenta Wiki.
 
+### Resultado da Análise
+
+Foram realizados 4 (quatro) cenários de análise de variáveis relacionadas às características da família e composição familiar.
+
+Para fins de análise prévia, segue quadro resumo de acurácia nos cenários analisados:
+
+![Figura 1](https://github.com/mariananresende/averiguacao_cadastral/blob/5812433b25893c54767e17b695a1b817b76a20f8/Analises_Grinaldo/Figura%201.png)
+
+### CENÁRIO 1 – TODAS AS VARIÁVEIS
+
+A primeira delas envolveu todas as variáveis envolvidas nesta categoria. Para analisar a correlação entre elas, foi gerada uma matriz de correlação de variáveis, representada na figura a seguir.
+
+![Figura2](https://github.com/mariananresende/averiguacao_cadastral/blob/18f54cbff312f9e0dd8dff20a95f1d79e312997c/Analises_Grinaldo/figura2.png)
+
+A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si. Assim, foram retiradas do dataframe as variáveis:  
+
+'qtd_1_infancia', 'qtd_crianca_adolescente', 'qtd_idosos', 'qtd_deficientes', 'tem_1_infancia', 'tem_crianca_adolescente', 'tem_deficiente'
+Após essa etapa, foram testados quatro modelos preditivos que são indicados para modelos com variáveis numéricas categóricas e quantitativas. Após o treinamento dos modelos e busca de hiperparâmetros, foram indentificados os seguites resultados para cada um dos modelos:
+*	Melhores hiperparâmetros para DecisionTree: {'classifier__max_depth': 5, 'classifier__min_samples_split': 5}
+*	Melhores hiperparâmetros para RandomForest: {'classifier__max_depth': 20, 'classifier__n_estimators': 200}
+*	Melhores hiperparâmetros para XGBoost: {'classifier__learning_rate': 0.1, 'classifier__max_depth': 3, 'classifier__n_estimators': 250}
+*	Melhores hiperparâmetros para CatBoost: {'classifier__depth': 5, 'classifier__iterations': 250, 'classifier__learning_rate': 0.1}
+
+Os resultados de acurácia e F1 score foram os seguintes:
+![figura3](https://github.com/mariananresende/averiguacao_cadastral/blob/62a0d8fddd0388d82ceefdb6cc5cd052a8610c77/Analises_Grinaldo/figura3.png)
+
+Posteriormente foram identificadas as variáveis independentes que mais contribuíram para cada um dos modelos estudados, conforme listagem abaixo das features mais importantes:
+
+10 Features mais importantes para o modelo DecisionTree:
+	Feature  Importância
+*	0          pct_idosos      0.11060
+*	1     pct_deficientes      0.05195
+*	2    dias_atualizacao      0.01630
+*	3  qtd_crianca_adulto      0.00810
+*	4  dias_cadastramento      0.00115
+*	5  pct_crianca_adulto      0.00020
+*	6          qtd_homens      0.00000
+*	7        qtd_mulheres      0.00000
+*	8          tem_mulher      0.00000
+*	9           tem_homem      0.00000
+
+10 Features mais importantes para o modelo RandomForest:
+	Feature  Importância
+*	0                  pct_idosos      0.03345
+*	1             pct_deficientes      0.03240
+*	2          dias_cadastramento      0.02545
+*	3              pct_1_infancia      0.02265
+*	4            dias_atualizacao      0.01830
+*	5                   tem_idoso      0.00680
+*	6            ind_parc_mds_fam      0.00565
+*	7     pct_crianca_adolescente      0.00280
+*	8    cod_familia_indigena_fam      0.00050
+*	9  ind_familia_quilombola_fam     -0.00045
+
+10 Features mais importantes para o modelo XGBoost:
+	Feature  Importância
+*	0               pct_idosos      0.08995
+*	1          pct_deficientes      0.03155
+*	2         dias_atualizacao      0.01610
+*	3           pct_1_infancia      0.01405
+*	4       dias_cadastramento      0.01030
+*	5       pct_crianca_adulto      0.00945
+*	6             qtde_pessoas      0.00675
+*	7  pct_crianca_adolescente      0.00530
+*	8         ind_parc_mds_fam      0.00155
+*	9       qtd_crianca_adulto      0.00030
+
+10 Features mais importantes para o modelo CatBoost:
+	Feature  Importância
+*	0               pct_idosos      0.03735
+*	1          pct_deficientes      0.03215
+*	2         dias_atualizacao      0.01040
+*	3           pct_1_infancia      0.00860
+*	4                tem_idoso      0.00740
+*	5       dias_cadastramento      0.00595
+*	6         ind_parc_mds_fam      0.00210
+*	7  pct_crianca_adolescente      0.00190
+*	8             qtde_pessoas      0.00145
+*	9       tem_crianca_adulto      0.00100
+
+Abaixo, segue gráfico com a análise da importância de todas as features para o modelo CatBoost.
+
+![figura4](https://github.com/mariananresende/averiguacao_cadastral/blob/317e6e43cc13794e87f4653ec2c51343b30894ba/Analises_Grinaldo/figura4.png)
+  
+Posteriormente, considerando que a variável target está desbalanceada, tendo 58% de famílias da amostra na classe 0, 21% na classe 1 e 20% na classe 2, foi feito um balanceamento aumentando a amostra para as classes 1 e 2, usando a estratégia de criar amostras sintéticas, e a redução de amostras da classe 0. Após o balanceamento, observou-se os seguintes resultados de cada modelo.
+
+*	Melhores hiperparâmetros para DecisionTree (usando dados balanceados): {'classifier__max_depth': 7, 'classifier__min_samples_split': 2}
+*	Melhores hiperparâmetros para RandomForest (usando dados balanceados): {'classifier__max_depth': 20, 'classifier__n_estimators': 200}
+*	Melhores hiperparâmetros para XGBoost (usando dados balanceados): {'classifier__learning_rate': 0.1, 'classifier__max_depth': 5, 'classifier__n_estimators': 300}
+*	Melhores hiperparâmetros para CatBoost (usando dados balanceados): {'classifier__depth': 5, 'classifier__iterations': 500, 'classifier__learning_rate': 0.1}
+
+Modelo (usando dados balanceados): DecisionTree
+  F1 Score: 0.70
+  Acurácia: 0.71
+Modelo (usando dados balanceados): RandomForest
+  F1 Score: 0.79
+  Acurácia: 0.79
+Modelo (usando dados balanceados): XGBoost
+  F1 Score: 0.80
+  Acurácia: 0.80
+Modelo (usando dados balanceados): CatBoost
+  F1 Score: 0.77
+  Acurácia: 0.78
+
+Em relação às features mais importantes, após o balanceamento, segue o resumo do que foi observado:
+
+![figura5](https://github.com/mariananresende/averiguacao_cadastral/blob/08a457d354cea1e30c5f0e37049ce5b7d25705b5/Analises_Grinaldo/figura5.png)
+
+### CENÁRIO 2 – RETIRADA DE VARIÁVEIS BOOLEANAS
+
+A primeira delas envolveu todas as variáveis envolvidas nesta categoria. Para analisar a correlação entre elas, foi gerada uma matriz de correlação de variáveis, representada na figura a seguir.
+
+![figura6](https://github.com/mariananresende/averiguacao_cadastral/blob/65295ae1434a4f670abc22417ad710d43d048546/Analises_Grinaldo/figura6.png)
+
+A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si. Assim, foram retiradas do dataframe as variáveis: 
+
+'qtd_1_infancia','qtd_crianca_adolescente','qtd_idosos','qtd_deficientes'
+
+Após essa etapa, foram testados quatro modelos preditivos que são indicados para modelos com variáveis numéricas categóricas e quantitativas. Após o treinamento dos modelos e busca de hiperparâmetros, foram indentificados os seguites resultados para cada um dos modelos:
+
+*	Melhores hiperparâmetros para DecisionTree: {'classifier__max_depth': 3, 'classifier__min_samples_split': 2}
+*	Melhores hiperparâmetros para RandomForest: {'classifier__max_depth': 10, 'classifier__n_estimators': 200}
+*	Melhores hiperparâmetros para XGBoost: {'classifier__learning_rate': 0.1, 'classifier__max_depth': 3, 'classifier__n_estimators': 250}
+*	Melhores hiperparâmetros para CatBoost: {'classifier__depth': 3, 'classifier__iterations': 500, 'classifier__learning_rate': 0.1}
+
+Os resultados de acurácia e F1 score foram os seguintes:
+
+![figura7](https://github.com/mariananresende/averiguacao_cadastral/blob/b63f11e3d81cc1a486c80c906a69fc840913c302/Analises_Grinaldo/figura7.png)
+
+Posteriormente foram identificadas as variáveis independentes que mais contribuíram para cada um dos modelos estudados, conforme listagem abaixo das features mais importantes:
+
+10 Features mais importantes para o modelo DecisionTree:
+
+                   Feature  Importância
+0               pct_idosos       0.1346
+1          pct_deficientes       0.0703
+2         ind_parc_mds_fam       0.0000
+3       qtd_crianca_adulto       0.0000
+4               qtd_homens       0.0000
+5             qtd_mulheres       0.0000
+6       pct_crianca_adulto       0.0000
+7  pct_crianca_adolescente       0.0000
+8           pct_1_infancia       0.0000
+9               pct_homens       0.0000
+
+10 Features mais importantes para o modelo RandomForest:
+                   Feature  Importância
+0               pct_idosos      0.11015
+1          pct_deficientes      0.04240
+2       qtd_crianca_adulto      0.01370
+3       dias_cadastramento      0.01335
+4           pct_1_infancia      0.01220
+5         dias_atualizacao      0.00590
+6             qtde_pessoas      0.00455
+7       pct_crianca_adulto      0.00425
+8  pct_crianca_adolescente      0.00330
+9         ind_parc_mds_fam      0.00255
+
+10 Features mais importantes para o modelo XGBoost:
+              Feature  Importância
+0          pct_idosos      0.10595
+1     pct_deficientes      0.04305
+2        qtde_pessoas      0.01560
+3  dias_cadastramento      0.01475
+4      pct_1_infancia      0.01430
+5  pct_crianca_adulto      0.00610
+6  qtd_crianca_adulto      0.00465
+7    dias_atualizacao      0.00425
+8        pct_mulheres      0.00125
+9    ind_parc_mds_fam      0.00100
+
+10 Features mais importantes para o modelo CatBoost:
+                    Feature  Importância
+0                pct_idosos      0.10615
+1           pct_deficientes      0.04460
+2        dias_cadastramento      0.01890
+3            pct_1_infancia      0.01500
+4              qtde_pessoas      0.01000
+5          dias_atualizacao      0.00570
+6        pct_crianca_adulto      0.00380
+7          ind_parc_mds_fam      0.00225
+8        qtd_crianca_adulto      0.00215
+9  cod_familia_indigena_fam      0.00005
+
+Abaixo, segue gráfico com a análise da importância de todas as features para o modelo CatBoost.
+
+![figura8](https://github.com/mariananresende/averiguacao_cadastral/blob/293b0bffa7d4df178c219f5b64a4dcdb21eb8706/Analises_Grinaldo/figura8.png)
+
+Posteriormente, considerando que a variável target está desbalanceada, tendo 58% de famílias da amostra na classe 0, 21% na classe 1 e 20% na classe 2, foi feito um balanceamento aumentando a amostra para as classes 1 e 2, usando a estratégia de criar amostras sintéticas, e a redução de amostras da classe 0. Após o balanceamento, observou-se os seguintes resultados de cada modelo.
+
+*	Melhores hiperparâmetros para DecisionTree (usando dados balanceados): {'classifier__max_depth': 7, 'classifier__min_samples_split': 2}
+*	Melhores hiperparâmetros para RandomForest (usando dados balanceados): {'classifier__max_depth': 20, 'classifier__n_estimators': 200}
+*	Melhores hiperparâmetros para XGBoost (usando dados balanceados): {'classifier__learning_rate': 0.1, 'classifier__max_depth': 5, 'classifier__n_estimators': 300}
+*	Melhores hiperparâmetros para CatBoost (usando dados balanceados): {'classifier__depth': 5, 'classifier__iterations': 500, 'classifier__learning_rate': 0.1}
+
+Modelo (usando dados balanceados): DecisionTree
+  F1 Score: 0.72
+  Acurácia: 0.73
+Modelo (usando dados balanceados): RandomForest
+  F1 Score: 0.79
+  Acurácia: 0.79
+Modelo (usando dados balanceados): XGBoost
+  F1 Score: 0.80
+  Acurácia: 0.80
+Modelo (usando dados balanceados): CatBoost
+  F1 Score: 0.79
+  Acurácia: 0.79
+
+Em relação às features mais importantes, após o balanceamento, segue o resumo do que foi observado:
+
+![figura9](https://github.com/mariananresende/averiguacao_cadastral/blob/90b8a64022740660c1ad767bee2362963307f05c/Analises_Grinaldo/figura9.png)
+
+###CENÁRIO 3 – RETIRADA DE VARIÁVEIS DE QUANTIDADE 
+
+A primeira delas envolveu todas as variáveis envolvidas nesta categoria. Para analisar a correlação entre elas, foi gerada uma matriz de correlação de variáveis, representada na figura a seguir.
+  
+  
+
+
+
+
+
 ### Escolaridade - Risla:
 Para analisar se a escolaridade dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com mais de 10 anos sem saber ler ou escrever;
