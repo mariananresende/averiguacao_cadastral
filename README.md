@@ -861,7 +861,8 @@ A partir dos dados normalizados, foi criada uma instância de Pipeline para trei
 A título de curiosidade - esses resultados podem ser conferidos [neste caderno](Analises_Risla/testes_variaveis_escolaridade_normalizado.ipynb) - segue lista das 10 variáveis mais importantes de acordo com o modelo:
 
 
-```Top 10 Features para o modelo DecisionTree balanceado:
+```
+Top 10 Features para o modelo DecisionTree balanceado:
 
                   Feature  Importância
 adultos_nunca_freq_escola     0.031791
@@ -907,7 +908,8 @@ adultos_nunca_freq_escola     0.011984
         pct_n_freq_escola     0.004435
       pct_freq_particular     0.002202
     pct_nunca_freq_escola     0.002161
-             ideb_ausente     0.000026```
+             ideb_ausente     0.000026
+```
 
 Assim, segue a lista das variáveis selecionadas a partir dos resultados de feature_importance do CatBoost:
 
