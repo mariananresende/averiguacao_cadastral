@@ -913,14 +913,14 @@ adultos_nunca_freq_escola     0.011984
 
 Assim, segue a lista das variáveis selecionadas a partir dos resultados de feature_importance do CatBoost:
 
-#### 1. pct_freq_publica
-#### 2. ideb_2017_municipio
-#### 3. adultos_nunca_freq_escola
-#### 4. pct_nao_alfabetizados
-#### 5. pct_freq_creche
-#### 6. pct_n_freq_escola
-#### 7. pct_freq_particular
-#### 8.  pct_nunca_freq_escola
+1. pct_freq_publica
+2. ideb_2017_municipio
+3. adultos_nunca_freq_escola
+4. pct_nao_alfabetizados
+5. pct_freq_creche
+6. pct_n_freq_escola
+7. pct_freq_particular
+8.  pct_nunca_freq_escola
 
 ### Trabalho - Michela:
 Para analisar se a condição de trabalho dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
