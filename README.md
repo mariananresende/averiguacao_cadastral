@@ -826,15 +826,99 @@ Em relação às features mais importantes, após o balanceamento, segue o resum
 ### Escolaridade - Risla:
 Para analisar se a escolaridade dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com mais de 10 anos sem saber ler ou escrever;
-* frequenta_escola: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 6 anos a 17 anos que não está na escola;
-* frequenta_escola_publica: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 6 anos a 17 anos que está na escola pública;
-* frequenta_escola_privada: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 6 anos a 17 anos que está na escola privada;
-* frequenta_escola_nunca: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 6 anos a 17 anos que nunca frequentou escola;
-* frequanta_creche: nova variável combinando as variáveis "cod_curso_frequentou_pessoa_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de menos de 6 anos que não está na creche; 
+* frequenta_escola: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 4 anos a 17 anos que não está na escola;
+* frequenta_escola_publica: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 4 anos a 17 anos que está na escola pública;
+* frequenta_escola_privada: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 4 anos a 17 anos que está na escola privada;
+* frequenta_escola_nunca: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 4 anos a 17 anos que nunca frequentou escola;
+* frequanta_creche: nova variável combinando as variáveis "cod_curso_frequentou_pessoa_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de menos de 4 anos que não está na creche; 
 * frequenta_escola_nunca_adulto: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com 18 anos ou mais que nunca frequentou escola;
 * cod_escola_local_memb;
 * Poderão ser pensadas e testadas variáveis a serem construídas por meio da engenharia de features, utilizando as varáveis "cod_curso_frequentou_pessoa_memb", "cod_ano_serie_frequentou_memb" e "cod_concluiu_frequentou_memb".  Para tanto, serão estudadas as variáveis que compõem as dimensões de vulnerabilidade do Índice de Vulnerabilidade das Famílias do Cadastro Único (IVCAD), "Desenvolvimento de Crianças e Adolescentes" e "Desenvolvimento na Primeira Infância" conforme documentação dos indicadores do Cadastro Único apresentada na ferramenta de metadados <a href="https://wiki-sagi.cidadania.gov.br/en/home/DS/Cad/I">Documenta Wiki</a>.
 * Além disso poderão ser incluídos indicadores escolares do município como o Ideb, por exemplo.
+
+Após análise de quais variáveis referentes a cada família seriam possíveis de calcular e inserir no modelo, chegou-se à seguinte lista:
+
+- Variável alfabetizado: percentual de pessoas maiores de 10 anos que não sabem ler ou escrever (**pct_nao_alfabetizados**)
+- Variável frequenta_escola: percentual de pessoas entre 4 e 17 anos que não frequentam a escola (**pct_n_freq_escola**)
+- Variável frequenta_escola_publica: percentual de pessoas entre 4 e 17 anos que frequentam a escola pública (**pct_freq_publica**)
+- Variável frequenta_escola_particular: percentual de pessoas entre 4 e 17 anos que frequentam a escola particular (**pct_freq_particular**)
+- Variável frequenta_escola_nunca: percentual de pessoas entre 4 e 17 anos que nunca frequentaram a escola (**pct_nunca_freq_escola**)
+- Variável frequenta_creche: percentual de crianças menores de 4 anos que não está na creche (**pct_n_freq_creche**)
+- Variável frequenta_escola_nunca_adulto: percentual de pessoas maiores de 18 anos que nunca frequentaram a escola (**pct_adultos_nunca_freq_escola**)
+- Variável frequenta_escola_municipio: percentual de pessoas entre 4 e 17 anos que frequentam a escola no município (**pct_freq_escola_municipio**)
+- Variável **ideb_2017_municipio** com os valores do IDEB de 2017 da rede pública para cada município*
+
+Com a criação das variáveis acima, foi possível criar uma matriz de correlação para retirar uma das variáveis que possuía alta correlação (acima de 0.80), conforme figura a seguir:
+
+![Gráfico de correlação das variáveis de escolaridade](Analises_Risla/matriz_corr_variaveis.png)
+
+Como a variável pct_freq_escola_municipio apresentou correlação de 0.9 com a variável pct_freq_publica, decidiu-se retirar a variável pct_freq_escola_municipio por considerar que a variável relacionada ao percentual de pessoas que frequentam a escola pública teria mais aderência ao problema de negócio.
+
+A partir dos dados normalizados, foi criada uma instância de Pipeline para treinar quatro modelos (Árvore de Decisão, Random Forest, XGBoost e CatBoost) com o objetivo de analisar a importância das variáveis de escolaridade para o modelo. Como o modelo CatBoost estava apresentando os melhores resultados na equipe, esse algoritmo foi escolhido para selecionar as variáveis mais importantes que serão adicionadas à base de dados completa para o modelo final. Através do seguinte gráfico é possível conferir quais variáveis foram consideradas mais importantes para o CatBoost:
+
+![Gráfico de importância de features de escolaridade](/Analises_Risla/import_features_catboost.png)
+
+A título de curiosidade - esses resultados podem ser conferidos [neste caderno](Analises_Risla/testes_variaveis_escolaridade_normalizado.ipynb) - segue lista das 10 variáveis mais importantes de acordo com o modelo:
+
+
+```Top 10 Features para o modelo DecisionTree balanceado:
+
+                  Feature  Importância
+adultos_nunca_freq_escola     0.031791
+         pct_freq_publica     0.017144
+      ideb_2017_municipio     0.004254
+        pct_n_freq_escola     0.001523
+    pct_nao_alfabetizados     0.000637
+          pct_freq_creche     0.000523
+      pct_freq_particular     0.000078
+
+Top 10 Features para o modelo RandomForest balanceado:
+
+                  Feature  Importância
+         pct_freq_publica     0.053930
+      ideb_2017_municipio     0.034506
+adultos_nunca_freq_escola     0.016833
+    pct_nao_alfabetizados     0.012948
+          pct_freq_creche     0.005627
+        pct_n_freq_escola     0.003192
+      pct_freq_particular     0.001829
+    pct_nunca_freq_escola     0.001591
+
+Top 10 Features para o modelo XGBoost balanceado:
+
+                  Feature  Importância
+         pct_freq_publica     0.050800
+      ideb_2017_municipio     0.035034
+adultos_nunca_freq_escola     0.014326
+    pct_nao_alfabetizados     0.010025
+          pct_freq_creche     0.005792
+        pct_n_freq_escola     0.004419
+    pct_nunca_freq_escola     0.002435
+      pct_freq_particular     0.002150
+
+Top 10 Features para o modelo CatBoost balanceado:
+
+                  Feature  Importância
+         pct_freq_publica     0.048396
+      ideb_2017_municipio     0.033817
+adultos_nunca_freq_escola     0.011984
+    pct_nao_alfabetizados     0.009046
+          pct_freq_creche     0.006134
+        pct_n_freq_escola     0.004435
+      pct_freq_particular     0.002202
+    pct_nunca_freq_escola     0.002161
+             ideb_ausente     0.000026```
+
+Assim, segue a lista das variáveis selecionadas a partir dos resultados de feature_importance do CatBoost:
+
+#### 1. pct_freq_publica
+#### 2. ideb_2017_municipio
+#### 3. adultos_nunca_freq_escola
+#### 4. pct_nao_alfabetizados
+#### 5. pct_freq_creche
+#### 6. pct_n_freq_escola
+#### 7. pct_freq_particular
+#### 8.  pct_nunca_freq_escola
 
 ### Trabalho - Michela:
 Para analisar se a condição de trabalho dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
@@ -858,5 +942,5 @@ Michela
 
 Renata
 
-Risla
+Risla Miranda - SEGES/MGI - rislalopes@gmail.com
 
