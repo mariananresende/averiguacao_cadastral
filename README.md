@@ -331,6 +331,7 @@ Desta forma, de modo a construir um dataframe final, com as variáveis que serã
 * cod_raca_cor_pessoa 
   
 ### Características do domicílio - Renata:
+---
 Para analisar se as características do domicílio contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias**:
 * uf_ibge;
 * regiao_ibge;
@@ -351,6 +352,7 @@ Para analisar se as características do domicílio contribuem para a acurácia d
 * Outros indicadores que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se contrbuem para uma maior acurácia do modelo.
 
 #### Resultado da análise exploratória
+---
 
 Em primeiro lugar, foi realizada uma extensa análise exploratória dos dados de domicílios. Algumas das principais constatações podem ser resumidas abaixo:
 
@@ -376,6 +378,7 @@ Apenas a variável **quantidade de pessoas** possui correlação acima de 0.3 co
 Mais detalhes podem ser vistos no caderno: Analises_Renata/01_Analise_inicial_domicilios.html    
 
 #### Resultado da análise das variáveis de domicílios 
+---
 
 Conforme a matriz de correlação abaixo (variáveis independentes relacionadas com domicílios), recomenda-se excluir as seguintes variáveis (correlação acima de 0.8) :
 * regiao_ibge
@@ -392,6 +395,21 @@ Abaixo são listadas as variáveis de correlação acima de 0.7:
 ![10_Modelos_padrao_24_0](https://github.com/user-attachments/assets/7218bf2d-732a-44e0-b9d8-ded0d53dc9a0)
 
 
+#### Geração inicial de modelos de classificação 
+---
+Foram testados alguns modelos para prever a classe de renda (variavel target) considerando-se somente as variáveis de domicílios:
+* CatBoost Classifier
+* XGBoost Classifier
+* Random Forest
+* Decision Tree
+* Logistic Regression
+* KNeighbors Classifier 
+
+Em um primeiro momento, sem utilização de busca de hiperparâmetros ou de balanceamento de classes, foi possível obter os seguintes resultados:
+
+![metricas_dom](https://github.com/user-attachments/assets/2c565532-21bc-4ff5-8374-3e9b5c44879c)
+
+Mais detalhes podem ser vistos no caderno: averiguacao_cadastral/Analises_Renata/02_Testando_Modelos.html
 
 
 
