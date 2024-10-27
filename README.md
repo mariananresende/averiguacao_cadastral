@@ -207,6 +207,7 @@ De modo a ouvir a área de negócio, foram realizadas reuniões com a Coordenado
 A partir das contribuições da área de negócio e com o objetivo de possibilitar o exercício por todos os autores do projeto no âmbito do Bootcamp, as análises foram dividdas em grupos temáticos, conforme se segue:
 
 ### Características do Responsável Familiar - Mariana:
+---
 O Responsável pela Unidadde Familiar (RUF) é a pessoa responsável por prestar as informações ao Cadastro Único em nome da família, que pode ser: 
 * Responsável Familiar (RF) - deve ser um dos componentes da família e morador do domicílio, com idade mínima de 16 (dezesseis) anos, preferencialmente mulher;
 * Representante Legal (RL) - indivíduo não membro da família e que não seja morador do domicílio, legalmente responsável por pessoas menores de dezesseis anos ou incapazes e responsável por prestar as informações ao Cadastro Único, quando não houver morador caracterizado como Responsável Familiar. Nas situações em que a família tiver o RL, este a representará e atuará em nome da família que está sendo cadastrada. Sendo assim, o RL
@@ -365,7 +366,7 @@ Em primeiro lugar, foi realizada uma extensa análise exploratória dos dados de
     
 ![01_Analise_inicial_domicilios_173_0](https://github.com/user-attachments/assets/cc370156-0113-46fe-8308-52ed3a35abd1)
 
-4. Famílias com uma **grande quantidade de pessoas** (caixas verdes) tendem a ter **renda familiar abaixo da renda familiar média**, principalmente quando das regiões Norte e Nordeste. Isso pode indicar um certo gau de importância da variável quantidade de pessoas em problemas de classificação da classe de renda.
+4. Famílias com uma **grande quantidade de pessoas** (caixas verdes) tendem a ter **renda familiar abaixo da renda familiar média**, principalmente quando das regiões Norte e Nordeste. Isso pode indicar um certo grau de importância da variável quantidade de pessoas em problemas de classificação da classe de renda.
 
 ![01_Analise_inicial_domicilios_186_0](https://github.com/user-attachments/assets/076f884f-97ec-4129-a4b8-5738c66edb99)
 
@@ -411,9 +412,21 @@ Em um primeiro momento, sem utilização de busca de hiperparâmetros ou de bala
 
 Mais detalhes podem ser vistos no caderno: averiguacao_cadastral/Analises_Renata/02_Testando_Modelos.html
 
+#### Variáveis preditoras mais relevantes:
+* qtde_pessoas 
+* uf_ibge 
+* qtd_comodos_domic_fam 
+* dias_cadastramento 
+* dias_atualizacao 
+* cod_material_piso_fam 
+* classf 
+* ind_parc_mds_fam 
+* cod_iluminacao_domic_fam 
+* cod_local_domic_fam
 
 
 ### Características da família e Composição familiar - Grinaldo: 
+---
 Para analisar se as características da família e a composição familiar contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias** e da **Base de pessoas**:
 * dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
 * dat_atualizacao_familia - Número de dias entre 31/12/2018 e a data de atualização cadastral;
@@ -551,6 +564,7 @@ Em relação às features mais importantes, após o balanceamento, segue o resum
 ![figura9](https://github.com/mariananresende/averiguacao_cadastral/blob/90b8a64022740660c1ad767bee2362963307f05c/Analises_Grinaldo/figura9.png)
 
 ### Escolaridade - Risla:
+---
 Para analisar se a escolaridade dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com mais de 10 anos sem saber ler ou escrever;
 * frequenta_escola: nova variável combinando as variáveis "ind_frequenta_escola_memb" e "idade" de modo a identificar a situação da família em relação à pessoa de 4 anos a 17 anos que não está na escola;
@@ -650,6 +664,7 @@ Assim, segue a lista das variáveis selecionadas a partir dos resultados de feat
 8.  pct_nunca_freq_escola
 
 ### Trabalho - Michela:
+---
 Para analisar se a condição de trabalho dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * trabalho_semana_adulto: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos que trabalhou na semana passada;
 * trabalho_semana_idoso: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com 60 anos ou mais que trabalhou na semana passada;
