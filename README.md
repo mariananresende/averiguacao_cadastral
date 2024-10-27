@@ -684,7 +684,7 @@ Mariana Nogueira de Resende Sousa - MDS-SAGICAD-DMA-CGPI - mariananresende@gmail
 
 Michela
 
-Renata
+Renata Guanaes - Departamento de Estudos Econômicos/CADE - rguanaes@gmail.com
 
 Risla Miranda - SEGES/MGI - rislalopes@gmail.com
 
