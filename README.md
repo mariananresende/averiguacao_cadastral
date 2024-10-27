@@ -350,6 +350,51 @@ Para analisar se as características do domicílio contribuem para a acurácia d
 * classf;
 * Outros indicadores que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se contrbuem para uma maior acurácia do modelo.
 
+#### Resultado da análise exploratória
+
+Em primeiro lugar, foi realizada uma extensa análise exploratória dos dados de domicílios. Algumas das principais constatações podem ser resumidas abaixo:
+
+1. O histograma dos valores das rendas mostra uma distribuição assimétrica concentrada à esquerda (maior concentração de valores de renda na faixa de 0 a 200).
+   Conforme cálculos realizados, **61% das famílias recebem até R$ 200**.
+   
+![01_Analise_inicial_domicilios_167_0](https://github.com/user-attachments/assets/fc62041c-84a2-4845-b93e-bd1ca9c66943)
+
+2. Nas **regiões Norte e Nordeste, 50% das rendas familiares tendem a ser mais baixas**, inclusive abaixo da renda média nacional, não sendo relevante a classificação da divisão administrativa. 
+    
+![01_Analise_inicial_domicilios_173_0](https://github.com/user-attachments/assets/cc370156-0113-46fe-8308-52ed3a35abd1)
+
+4. Famílias com uma **grande quantidade de pessoas** (caixas verdes) tendem a ter **renda familiar abaixo da renda familiar média**, principalmente quando das regiões Norte e Nordeste. Isso pode indicar um certo gau de importância da variável quantidade de pessoas em problemas de classificação da classe de renda.
+
+![01_Analise_inicial_domicilios_186_0](https://github.com/user-attachments/assets/076f884f-97ec-4129-a4b8-5738c66edb99)
+
+No entanto, a análise exploratória evidencia que não há variáveis de domicílio que possam auxiliar, de forma isolada e em grau elevado, na identificação da classe de renda.
+Apenas a variável **quantidade de pessoas** possui correlação acima de 0.3 com a **classe de renda**.
+
+![01_Analise_inicial_domicilios_206_0](https://github.com/user-attachments/assets/3315676e-f999-4c7a-a370-f1c7d4045e8e)
+
+
+Mais detalhes podem ser vistos no caderno: Analises_Renata/01_Analise_inicial_domicilios.html    
+
+#### Resultado da análise das variáveis de domicílios 
+
+Conforme a matriz de correlação abaixo (variáveis independentes relacionadas com domicílios), recomenda-se excluir as seguintes variáveis (correlação acima de 0.8) :
+* regiao_ibge
+* qtd_comodos_dormitorio_fam
+* cod_banheiro_domic_fam
+
+Abaixo são listadas as variáveis de correlação acima de 0.7:
+* Colunas: uf_ibge e regiao_ibge - Correlação: 0.97
+* Colunas: qtd_comodos_domic_fam e qtd_comodos_dormitorio_fam - Correlação: 0.81
+* Colunas: cod_agua_canalizada_fam e cod_banheiro_domic_fam - Correlação: 0.83
+* Colunas: cod_local_domic_fam e cod_especie_domic_fam - Correlação: 0.73
+* Colunas: cod_agua_canalizada_fam e cod_abaste_agua_domic_fam - Correlação: 0.74
+
+![10_Modelos_padrao_24_0](https://github.com/user-attachments/assets/7218bf2d-732a-44e0-b9d8-ded0d53dc9a0)
+
+
+
+
+
 ### Características da família e Composição familiar - Grinaldo: 
 Para analisar se as características da família e a composição familiar contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias** e da **Base de pessoas**:
 * dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
