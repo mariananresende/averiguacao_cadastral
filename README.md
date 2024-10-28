@@ -676,7 +676,59 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 * trabalho_12meses_criança: nova variável combinando as variáveis "cod_trabalho_12_meses_memb" e "idade" de modo a identificar a situação da família em relação à pessoa menor de 18 anos com trabalho remunerado em algum período nos último 12 meses;
 * meses_trabalho: nova variável combinando as variáveis "qtd_meses_12_meses_memb" e "idade" de modo a identificar a situação da família em relação ao número de meses trabalhado nos últimos 12 meses para pessoa a partir de 18 anos.
 
-  
+## Base de dados final
+Após a seleção das features mais importantes dentro de cada temática, foi preparada uma base conjugando as features selecionadas, a qual foi usada para treinamento do modelo. O dicionário da base preaprada segue abaixo:
+| Variável | Descrição |
+| ------- | -------|
+| id_familia  |                      96502 non-null  int64  
+ 1   rf_idade                         96502 non-null  int64  
+ 2   rf_trab_principal                96502 non-null  float64
+ 3   rf_com_deficiencia               96502 non-null  int64  
+ 4   rf_trab_agricultura              96502 non-null  float64
+ 5   rf_sexo                          96502 non-null  int64  
+ 6   rf_curso_frequentou              96502 non-null  float64
+ 7   rf_curso_frequenta               96502 non-null  float64
+ 8   rf_trabalhou_semana              96502 non-null  float64
+ 9   rf_cor_raca                      96502 non-null  float64
+ 10  rf_concluiu_curso                96502 non-null  float64
+ 11  pct_extrativista                 96502 non-null  float64
+ 12  pct_conta_propria                96502 non-null  float64
+ 13  pct_trab_rural_temporario        96502 non-null  float64
+ 14  pct_empregado_sem_carteira       96502 non-null  float64
+ 15  pct_empregado_com_carteira       96502 non-null  float64
+ 16  pct_trab_domestico_sem_carteira  96502 non-null  float64
+ 17  pct_militar_servidor             96502 non-null  float64
+ 18  pct_trabalho_12meses_adulto      96502 non-null  float64
+ 19  pct_trabalho_12meses_idoso       96502 non-null  float64
+ 20  pct_trabalho_12meses_crianca     96502 non-null  float64
+ 21  pct_nao_alfabetizados            96502 non-null  float64
+ 22  pct_n_freq_escola                96502 non-null  float64
+ 23  pct_freq_publica                 96502 non-null  float64
+ 24  pct_freq_particular              96502 non-null  float64
+ 25  pct_adulto_nunca_freq_escola     96502 non-null  float64
+ 26  pct_escolar_nunca_freq_escola    96502 non-null  float64
+ 27  pct_freq_creche                  96502 non-null  float64
+ 28  pct_idosos                       96502 non-null  float64
+ 29  pct_deficientes                  96502 non-null  float64
+ 30  pct_1_infancia                   96502 non-null  float64
+ 31  pct_adulto                       96502 non-null  float64
+ 32  pct_crianca_adolescente          96502 non-null  float64
+ 33  fam_gpte                         96502 non-null  float64
+ 34  ideb_2017_municipio              96502 non-null  float64
+ 35  cd_ibge                          96502 non-null  int64  
+ 36  uf_ibge                          96502 non-null  int64  
+ 37  classf                           96502 non-null  int64  
+ 38  cod_local_domic_fam              96502 non-null  float64
+ 39  qtd_comodos_domic_fam            96502 non-null  float64
+ 40  cod_material_piso_fam            96502 non-null  float64
+ 41  cod_iluminacao_domic_fam         96502 non-null  float64
+ 42  cod_familia_indigena_fam         96502 non-null  float64
+ 43  ind_familia_quilombola_fam       96502 non-null  float64
+ 44  ind_parc_mds_fam                 96502 non-null  float64
+ 45  qtde_pessoas                     96502 non-null  object 
+ 46  dias_cadastramento               96502 non-null  float64
+ 47  dias_atualizacao                 96502 non-null  int64  
+ 48  classe_renda                     96502 non-null  float64
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
 
