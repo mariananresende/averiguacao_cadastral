@@ -727,8 +727,24 @@ Após a seleção das features mais importantes dentro de cada temática, foi pr
 |  dias_cadastramento | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_cadastramento_fam', conforme dicionário da **base familia** |
 |  dias_atualizacao | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_atualizacao_familia', conforme dicionário da **base familia** |
 |  classe_renda | Variável nova com as 3 classes de renda a serem preditas pelo modelo, conforme dicionário da **base familia** |
+Foram preparados dois dataframes com as features acima descritas, o df_modelo, o qual foi construído a partir do balanceamento da classe_renda original, e o df_modelo_balanceado, construído a partir de uma amostra que levou em conta o balanceamento das calsses, de modo a ter um número semelhante de dados relacionados às três classes. Os dataframes constam na pasta Data_modelo.
+Essa estratégia permitiu comparar a performance dos modelos em uma base desbalanceada, em uma base balanceada com posterior estratégias de balanceamento e a partir de uma base balanceada com dados originais.
 
+## Pré-processamento
+Após a preparação no df_modelo
+## Tipos de modelos treinados
+Considerando que o objetivo do projeto é preparar um modelo preditivo que classique as famílias do Cadastro Único, em 3 classes de renda, por meio das características das famílias apresentadas em varáveis numéricas categóricas, quantitativas e percentuais, foram treinados e comparados os seguintes modelos:
+* Random Forest Classifier - baseado em um conjunto de árvores de decisão, cada uma treinada em diferentes subconjuntos dos dados, é muito adequado para um problema de 3 classes, pois as árvores de decisão internas geram divisões que podem capturar a complexidade das diferentes classes;
+* XGBoost - combina várias árvores de decisão de forma sequencial, corrigindo erros das árvores anteriores, é uma boa escolha para problemas de classificação com múltiplas classes devido ao seu desempenho e flexibilidade, especialmente quando os dados apresentam relações complexas entre variáveis;
+* CatBoost Classifier - lida com variáveis categóricas de forma mais eficiente, sendo ideal para problemas que incluem variáveis categóricas numéricas e quantitativas, sendo uma boa escolha quando se deseja maximizar a performance sem a necessidade de muito pré-processamento;
+* Regressão Logística Multinomial - método linear que pode ser adaptado para problemas de classificação com mais de duas classes, pode ser uma opção viável para problemas de classificação multiclasse, mas pode ter desempenho inferior em dados com relações complexas, a menos que se utilizem técnicas de feature engineering para melhorar o ajuste;
+*  K-Nearest Neighbors (KNN) - método baseado em distância que classifica as amostras com base nos K vizinhos mais próximos, pode funcionar bem para problemas de 3 classes em conjuntos de dados menores, mas seu desempenho pode cair em conjuntos maiores ou mais complexos.
 
+## Pré-processamento
+
+### Etapas do treinamento
+Foi realizada uma série de etapas para o treinamento dos modelos, que possibilitarem posteriormente uma comparação entre os resultados obtidos utilizando diversas estratégias, comparando, dentre outras:
+* Foram 
 
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
