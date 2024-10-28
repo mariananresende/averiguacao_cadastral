@@ -683,52 +683,53 @@ Após a seleção das features mais importantes dentro de cada temática, foi pr
 | id_familia  |  Identificador único da família para pareamento com a base de pessoas |
 | rf_idade  | Idade do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1, conforme dicionário da **base pessoas**, e da variável 'idade' |
 | rf_trab_principal |  Função principal do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_principal_trab_memb', conforme dicionário da **base pessoas** |    
- 3   rf_com_deficiencia               96502 non-null  int64  
- 4   rf_trab_agricultura              96502 non-null  float64
- 5   rf_sexo                          96502 non-null  int64  
- 6   rf_curso_frequentou              96502 non-null  float64
- 7   rf_curso_frequenta               96502 non-null  float64
- 8   rf_trabalhou_semana              96502 non-null  float64
- 9   rf_cor_raca                      96502 non-null  float64
- 10  rf_concluiu_curso                96502 non-null  float64
- 11  pct_extrativista                 96502 non-null  float64
- 12  pct_conta_propria                96502 non-null  float64
- 13  pct_trab_rural_temporario        96502 non-null  float64
- 14  pct_empregado_sem_carteira       96502 non-null  float64
- 15  pct_empregado_com_carteira       96502 non-null  float64
- 16  pct_trab_domestico_sem_carteira  96502 non-null  float64
- 17  pct_militar_servidor             96502 non-null  float64
- 18  pct_trabalho_12meses_adulto      96502 non-null  float64
- 19  pct_trabalho_12meses_idoso       96502 non-null  float64
- 20  pct_trabalho_12meses_crianca     96502 non-null  float64
- 21  pct_nao_alfabetizados            96502 non-null  float64
- 22  pct_n_freq_escola                96502 non-null  float64
- 23  pct_freq_publica                 96502 non-null  float64
- 24  pct_freq_particular              96502 non-null  float64
- 25  pct_adulto_nunca_freq_escola     96502 non-null  float64
- 26  pct_escolar_nunca_freq_escola    96502 non-null  float64
- 27  pct_freq_creche                  96502 non-null  float64
- 28  pct_idosos                       96502 non-null  float64
- 29  pct_deficientes                  96502 non-null  float64
- 30  pct_1_infancia                   96502 non-null  float64
- 31  pct_adulto                       96502 non-null  float64
- 32  pct_crianca_adolescente          96502 non-null  float64
- 33  fam_gpte                         96502 non-null  float64
- 34  ideb_2017_municipio              96502 non-null  float64
- 35  cd_ibge                          96502 non-null  int64  
- 36  uf_ibge                          96502 non-null  int64  
- 37  classf                           96502 non-null  int64  
- 38  cod_local_domic_fam              96502 non-null  float64
- 39  qtd_comodos_domic_fam            96502 non-null  float64
- 40  cod_material_piso_fam            96502 non-null  float64
- 41  cod_iluminacao_domic_fam         96502 non-null  float64
- 42  cod_familia_indigena_fam         96502 non-null  float64
- 43  ind_familia_quilombola_fam       96502 non-null  float64
- 44  ind_parc_mds_fam                 96502 non-null  float64
- 45  qtde_pessoas                     96502 non-null  object 
- 46  dias_cadastramento               96502 non-null  float64
- 47  dias_atualizacao                 96502 non-null  int64  
- 48  classe_renda                     96502 non-null  float64
+| rf_com_deficiencia |   Marcação se responsável familiar tem deficiência, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_deficiencia_memb', conforme dicionário da **base pessoas** |
+| rf_trab_agricultura  | Marcação se responsável familiar atua em atividade extrativista, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_agricultura_trab_memb', conforme dicionário da **base pessoas** |
+|   rf_sexo  | Sexo do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_sexo_pessoa', conforme dicionário da **base pessoas** |
+|  rf_curso_frequentou | Identificação do curso mais elevado que o responsável familiar frequentou, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_curso_frequentou_pessoa_memb', conforme dicionário da **base pessoas** |        | rf_curso_frequenta  |  Identificação do curso que o responsável familiar frequenta, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_curso_frequenta_memb', conforme dicionário da **base pessoas** |
+|   rf_trabalhou_semana  | Identificação se o responsável familiar trabalhou na semana passada, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_trabalhou_memb', conforme dicionário da **base pessoas** |
+|   rf_cor_raca   | Cor ou raça do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_raca_cor_pessoa', conforme dicionário da **base pessoas** |      
+|  rf_concluiu_curso |  Marcação se responsável familiar concluiu o curso mais elevado que frequentou, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_concluiu_frequentou_memb', conforme dicionário da **base pessoas** |
+|  pct_extrativista  | Percentual dos adultos que atuam em atividade extrativista, calculado por meio do campo 'cod_agricultura_trab_memb' == 1, com o filtro de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+| pct_conta_propria | Percentual de adultos que trabalham por conta própria, calculado por meio do campo 'cod_principal_trab_memb'] == 1, com filtro de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+|    pct_trab_rural_temporario | Percentual de adultos que atuam como trabalhador temporário em área rual, calculado por meio do campo 'cod_principal_trab_memb' == 2, com filtro de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+| pct_empregado_sem_carteira | Percentual de adultos empregados sem carteira assinada, calculado por meio do campo 'cod_principal_trab_memb' == 3, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+ |  pct_empregado_com_carteira |Percentual de adultos empregados com carteira assinada, calculado por meio do campo 'cod_principal_trab_memb' == 4, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+ | pct_trab_domestico_sem_carteira | Percentual de adultos trabalhadores domésticos sem carteira assinada, calculado por meio do campo 'cod_principal_trab_memb' == 5, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+ | pct_militar_servidor | Percentual de adultos militares ou servidores públicos, calculado por meio do campo 'cod_principal_trab_memb' == 8, com filtro  de 'idade' >= 18 e <= 59), dividido pela 'qtde_pessoas' |
+ | pct_trabalho_12meses_adulto | Percentual de adultos com trabalho em algum período nos últimos 12 meses, calculado por meio do campo 'cod_trabalho_12_meses_memb' == 1, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+| pct_trabalho_12meses_idoso | Percentual de idosos com trabalho em algum período nos últimos 12 meses, calculado por meio do campo 'cod_trabalho_12_meses_memb' == 1, com filtro  de 'idade' >= 60, dividido pela 'qtde_pessoas' |
+| pct_trabalho_12meses_crianca | Percentual de idosos com trabalho em algum período nos últimos 12 meses, calculado por meio do campo 'cod_trabalho_12_meses_memb' == 1, com filtro  de 'idade' <18 dividido pela 'qtde_pessoas'. Lembrando que neste caso, conforme registrado no tópico referente à limpeza de dados, os campos de trabalho só foram considerado para idade >= 14 |           
+| pct_nao_alfabetizados  | Percentual de pessoas não alfabetizadas, calculado por meio do campo 'cod_sabe_ler_escrever_memb' == 2, com filtro de 'idade' >= 10, divido  pela 'qtde_pessoas' |
+|  pct_n_freq_escola  | Percentual de pessoas em idade escolar que não frequentam a escola, calculado por meio do campo 'ind_frequenta_escola_memb' == 3, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+ | pct_freq_publica   | Percentual de pessoas em idade escolar que frequentam escola pública, calculada por meio do campo 'ind_frequenta_escola_memb' == 1, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+ |  pct_freq_particular  | Percentual de pessoas em idade escolar que frequentam escola particular, calculada por meio do campo 'ind_frequenta_escola_memb' == 2, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+ |  pct_adulto_nunca_freq_escola  | Percentual de adultos que nunca frequentaram escola, calculada por meio do campo 'ind_frequenta_escola_memb' == 4, com filtro de 'idade' >= 18, dividido pela 'qtde_pessoas' |
+ |  pct_escolar_nunca_freq_escola | Percentual de pessoas em idade escolar que nunca frequentaram escola, calculada por meio do campo 'ind_frequenta_escola_memb' == 4, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+|  pct_freq_creche | Percentual de pessoas da primeira infância que frequentam creche, calculada por meio do campo 'cod_curso_frequenta_memb' == 1, com filtro de 'idade' <4, dividido pela 'qtde_pessoas' |     
+|  pct_idosos  | Pecentual de idosos que compõem a família, calculado por meio do filtro 'idade' >= 60, dividido pela 'qtde_pessoas'|
+|  pct_deficientes  | Percentual de pessoas com deficiência que compõem a família, calculado por meio do campo 'cod_deficiencia_memb' == 1, dividido pela 'qtde_pessoas' |     
+|  pct_1_infancia |  Percentual de pessoas da primeira infância que compõem a família, calculado por meio do filtro 'idade' <=6, dividido pela 'qtde_pessoas' |
+|  pct_adulto |  Percentual de adultos que compõem a família, calculado por meio do filtro 'idade' >= 18, dividido pela 'qtde_pessoas' |
+ |  pct_crianca_adolescente  | Percentual de crianças e adolscentes que compõem a família, calculado por meio do filtro 'idade' >6 e <= 17, dividido pela 'qtde_pessoas' |  
+ |  fam_gpte  | Marcação se a família compõem algum Grupo populacional,  tradicional e específico (GPTE), calculado por meio dos filtros 'ind_parc_mds_fam' != 0 ou 'cod_familia_indigena_fam'] == 1 ou 'ind_familia_quilombola_fam'] == 1 |
+|  ideb_2017_municipio | Índice de Desenvolvimento da Educação Básica (Ideb) de 2017 |
+|  uf_ibge | Nova variável criada com o código das Unidades Federativas (UF), conforme dicionário da **base familia** |  
+|  classf | Subdivisão pela Unidade Federativa e divisão administrativa, conforme dicionário da **base familia** | 
+|  cod_local_domic_fam  | Características do local onde está situado o domicílio, conforme dicionário da **base familia** | 
+|  qtd_comodos_domic_fam | Quantidade de comodos do domicilio |
+|  cod_material_piso_fam | Material predominante no piso do domicílio, conforme dicionário da **base familia** | 
+|  cod_iluminacao_domic_fam  | Tipo de iluminação do domicílio, conforme dicionário da **base familia** | 
+|  cod_familia_indigena_fam | Marcação se a família é indígena | 
+|  ind_familia_quilombola_fam | Marcação se a família é quilombola | 
+|  ind_parc_mds_fam | Marcação se a família pertence a algum dos Grupos tradicionais e específicos | 
+|  qtde_pessoas  | Quantidade de pessoas que compõem a família e são utilizadas no cálculo da renda per capita familiar, conforme dicionário da **base familia** | 
+|  dias_cadastramento | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_cadastramento_fam', conforme dicionário da **base familia** |
+|  dias_atualizacao | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_atualizacao_familia', conforme dicionário da **base familia** |
+|  classe_renda | Variável nova com as 3 classes de renda a serem preditas pelo modelo, conforme dicionário da **base familia** |
+
+
+
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
 
