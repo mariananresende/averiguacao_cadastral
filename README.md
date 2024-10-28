@@ -587,19 +587,19 @@ Após análise de quais variáveis referentes a cada família seriam possíveis 
 - Variável frequenta_creche: percentual de crianças menores de 4 anos que não está na creche (**pct_n_freq_creche**)
 - Variável frequenta_escola_nunca_adulto: percentual de pessoas maiores de 18 anos que nunca frequentaram a escola (**pct_adultos_nunca_freq_escola**)
 - Variável frequenta_escola_municipio: percentual de pessoas entre 4 e 17 anos que frequentam a escola no município (**pct_freq_escola_municipio**)
-- Variável **ideb_2017_municipio** com os valores do IDEB de 2017 da rede pública para cada município*
+- Variável **ideb_2017_municipio** com os valores do IDEB de 2017 da rede pública para cada município
 
 Com a criação das variáveis acima, foi possível criar uma matriz de correlação para retirar uma das variáveis que possuía alta correlação (acima de 0.80), conforme figura a seguir:
 
-![Gráfico de correlação das variáveis de escolaridade](Analises_Risla/matriz_corr_variaveis.png)
+![Gráfico de correlação das variáveis de escolaridade](matriz_corr_variaveis.png)
 
 Como a variável pct_freq_escola_municipio apresentou correlação de 0.9 com a variável pct_freq_publica, decidiu-se retirar a variável pct_freq_escola_municipio por considerar que a variável relacionada ao percentual de pessoas que frequentam a escola pública teria mais aderência ao problema de negócio.
 
 A partir dos dados normalizados, foi criada uma instância de Pipeline para treinar quatro modelos (Árvore de Decisão, Random Forest, XGBoost e CatBoost) com o objetivo de analisar a importância das variáveis de escolaridade para o modelo. Como o modelo CatBoost estava apresentando os melhores resultados na equipe, esse algoritmo foi escolhido para selecionar as variáveis mais importantes que serão adicionadas à base de dados completa para o modelo final. Através do seguinte gráfico é possível conferir quais variáveis foram consideradas mais importantes para o CatBoost:
 
-![Gráfico de importância de features de escolaridade](/Analises_Risla/import_features_catboost.png)
+![Gráfico de importância de features de escolaridade](import_features_catboost.png)
 
-A título de curiosidade - esses resultados podem ser conferidos [neste caderno](Analises_Risla/testes_variaveis_escolaridade_normalizado.ipynb) - segue lista das 10 variáveis mais importantes de acordo com o modelo:
+A título de curiosidade segue lista das 10 variáveis mais importantes de acordo com o modelo:
 
 
 ```
@@ -686,5 +686,5 @@ Michela
 
 Renata Guanaes - Departamento de Estudos Econômicos/CADE - rguanaes@gmail.com
 
-Risla Miranda - SEGES/MGI - rislalopes@gmail.com
+Risla Miranda - SEGES/MGI - rislamiranda@gmail.com
 
