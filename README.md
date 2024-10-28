@@ -764,6 +764,7 @@ O modelo foi selecionado a partir das características indicadas pela área de n
 *  Uma alto recall, especialmente para a classe 2, de modo a evitar falsos negativos. Como o objetivo é identificar as famílias a serem convocada para uma qualificação cadastral, é importante que as famílias que tenham características de serem classificadas como classe 2 sejam identificadas, mesmo que para isso tenha um risco um pouco mais elevado de que famílias da classe 0 ou 1 sejam classificadas como 2.
 Além disso, foram considerados também, para a seleção do modelo, um equilíbrio entre essas duas métricas, e para tanto comparados os valores do F1-Score dos modelos, além da análise do AUC, que avalia a capacidade do modelo de separar as classes.
 Assim, o modelo selecionado apresentou os seguintes resultados:
+
 | Classe |  Precisão | Recall | F1-Score | AUC |
 |----|-----|-----|------------| ------ |
 | Classe 0 | 0.7683 | 0.807884 |  0.7876 | 0.9199 |
@@ -776,8 +777,12 @@ Considerando o modelo como um todo, pode-se destacar:
 * Um bom Equilíbrio entre Precision e Recall, pois o F1-score é relativamente alto para todas as classes, especialmente para a classe 2.
 * O modelo apresentou um desempenho consistente entre as classes, indicando que não está focado em uma classe específica, mas está tentando capturar bem todas elas.
 
-## Utilização do modelo
+As etapas para a construção do modelo e os resultados obtidos podem ser acessados e replicados por meio do notebook Final_Modelo_df_balanceado_onehotencoder_Catboost.ipynb
 
+## Utilização do modelo
+Para a utilização do modelo CatBoostClassifier_balanceado.pkl para predição das classes é preciso fazer a limpeza das bases, de modo a retirar o valores NaN. Sugere-se usar as regras descritas na seção "Limpeza das bases", a qual segue as regras de preenchimento do formulário do Cadastro Único 
+Após esta etapa é preciso criar uma base de dados final com as features selecionadas no modelo, o que pode ser feito por meio do notebook Gerando_df_modelo_final.ipynb
+Por fim, o df produzido deverá ser dividido em um dataframe X, com as fetures, e outro com a variável target classe_renda, para posterior comaparação. Para tanto, o caminho está detalhado no notebook Testando_modelo.ipynb
 
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
