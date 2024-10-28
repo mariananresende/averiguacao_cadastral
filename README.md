@@ -680,9 +680,9 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 Após a seleção das features mais importantes dentro de cada temática, foi preparada uma base conjugando as features selecionadas, a qual foi usada para treinamento do modelo. O dicionário da base preaprada segue abaixo:
 | Variável | Descrição |
 | ------- | -------|
-| id_familia  |                      96502 non-null  int64  
- 1   rf_idade                         96502 non-null  int64  
- 2   rf_trab_principal                96502 non-null  float64
+| id_familia  |  Identificador único da família para pareamento com a base de pessoas |
+| rf_idade  | Idade do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1, conforme dicionário da **base pessoas**, e da variável 'idade' |
+| rf_trab_principal |  Função principal do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_principal_trab_memb', conforme dicionário da **base pessoas** |    
  3   rf_com_deficiencia               96502 non-null  int64  
  4   rf_trab_agricultura              96502 non-null  float64
  5   rf_sexo                          96502 non-null  int64  
