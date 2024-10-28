@@ -239,13 +239,7 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 Foi realizada a análise das variáveis relacionadas ao responsável familiar a partir da base amostral de pessoas, filtrando 'cod_parentesco_rf_pessoa' igual a 1. Para tanto, foi gerada uma matriz de correlação das variáveis, conforme figura abaixo.
 ![Matriz_correlacao](https://github.com/user-attachments/assets/0096bd1b-da05-4507-8911-4429fc256914)
 
-A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si, de modo a evitar a:
-* Multicolinearidade, que ocorre quando duas ou mais variáveis independentes em um modelo têm uma correlação forte entre si. Quando isso acontece, torna-se difícil para o modelo determinar o impacto individual de cada variável nas previsões, pois elas trazem informações muito semelhantes. Isso pode inflar os coeficientes de regressão em modelos lineares, tornando as estimativas menos confiáveis. O modelo se torna sensível a pequenas mudanças nos dados, resultando em coeficientes instáveis, que podem variar bastante se o conjunto de dados for alterado, comprometendo a interpretabilidade e a precisão do modelo.
-* Redundância de Informação, pois incluir variáveis redundantes não acrescenta novas informações ao modelo e pode, inclusive, aumentar o ruído. Em vez de contribuir para a previsão, elas podem apenas aumentar a complexidade do modelo sem melhorar seu desempenho, podendo levar a um ajuste excessivo (overfitting), onde o modelo se adapta muito bem aos dados de treino, mas não generaliza bem para novos dados.
-* Complexidade do Modelo, ao usar um número excessivo de variáveis para descrever o comportamento do target, tornando o modelo difícel de interpretar. Um modelo mais simples é preferível, pois facilita a interpretação e o entendimento dos fatores que influenciam as previsões. Remover variáveis com alta correlação contribui para uma análise mais clara e objetiva.
-* Impacto no Tempo de Treinamento, pois cada variável utilizada em um modelo afeta o tempo necessário para treinamento. Assim, variáveis redundantes aumentam o número de cálculos e a complexidade computacional, tornando o processo de treinamento mais lento. Eliminar variáveis com alta correlação reduz o tempo de processamento e otimiza o desempenho do modelo, sem perder significativamente a capacidade de previsão.
-
-Assim, foram retiradas do dataframe as variáveis: 'cod_afastado_trab_memb', 'qtd_meses_12_meses_memb' e 'cod_trabalho_12_meses_memb'.
+A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si, sendo retiradas do dataframe as variáveis: 'cod_afastado_trab_memb', 'qtd_meses_12_meses_memb' e 'cod_trabalho_12_meses_memb'.
 
 Após essa etapa, foram testados quatro modelos preditivos que são indicados para modelos com variáveis numéricas categóricas e quantitativas. Após o treinamento dos modelos e busca de hiperparâmetros, foram indentificados os seguites resultados para cada um dos modelos:
 * Melhores hiperparâmetros para DecisionTree: {'classifier__max_depth': 7, 'classifier__min_samples_split': 10}
@@ -727,11 +721,34 @@ Após a seleção das features mais importantes dentro de cada temática, foi pr
 |  dias_cadastramento | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_cadastramento_fam', conforme dicionário da **base familia** |
 |  dias_atualizacao | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_atualizacao_familia', conforme dicionário da **base familia** |
 |  classe_renda | Variável nova com as 3 classes de renda a serem preditas pelo modelo, conforme dicionário da **base familia** |
+
 Foram preparados dois dataframes com as features acima descritas, o df_modelo, o qual foi construído a partir do balanceamento da classe_renda original, e o df_modelo_balanceado, construído a partir de uma amostra que levou em conta o balanceamento das calsses, de modo a ter um número semelhante de dados relacionados às três classes. Os dataframes constam na pasta Data_modelo.
+
 Essa estratégia permitiu comparar a performance dos modelos em uma base desbalanceada, em uma base balanceada com posterior estratégias de balanceamento e a partir de uma base balanceada com dados originais.
 
 ## Pré-processamento
-Após a preparação no df_modelo
+Após a preparação das bases, foi ralizado o pré-processamento das features, utilizando diferentes estratégias que permitiram comparar quais trouxeram melhores desempenho para o modelo.
+### Processamento One-Hot Encoding
+Mesmo para variáveis categóricas que já são representadas numericamente, adotar essa técnica de processamento ajuda a:
+* Preservar o Significado Categórico: variáveis categóricas podem ser representadas numericamente, mas esses números não indicam uma ordem ou magnitude. Se usarmos essas variáveis diretamente em um modelo, ele pode interpretar os números como quantitativos, o que levaria a conclusões incorretas sobre a relação entre os valores. O One-Hot Encoding evita isso, transformando cada categoria em uma variável binária independente, preservando o caráter categórico da variável.
+* Evitar Relações Espúrias entre Categorias: variáveis categóricas numéricas podem ser erroneamente tratadas como variáveis ordinais (onde a ordem importa). Isso significa que os modelos podem criar relações que não existem entre os números atribuídos às categorias.
+O One-Hot Encoding trata cada categoria como uma entidade independente, eliminando essas relações artificiais.
+* Melhor Desempenho do Modelo: Alguns algoritmos de machine learning, como árvores de decisão e redes neurais, tendem a ter um melhor desempenho quando recebem variáveis binárias (0/1) para cada categoria. O One-Hot Encoding facilita a identificação de padrões entre categorias de forma mais eficaz nesses modelos.
+* Compatibilidade com Algoritmos de Machine Learning: Certos algoritmos, como regressão logística e K-means, assumem que as variáveis de entrada são numéricas e podem ser influenciados por magnitude. Nesse contexto, variáveis categóricas numéricas sem transformação podem distorcer os resultados. O One-Hot Encoding converte essas variáveis em uma forma que mantém a integridade dos dados categóricos.
+Desta forma, os modelos treinados foram testados com e sem o processamento utilizando o one-hot encoding, ou utilizando o one-hot encoding para algunas variáveis categóricas, de modo a identificar a estratégia que apresentou os melhores resultados.
+
+### Normalização
+Outro pré-processamento realizado diz respeito à normalização dos dados, de maneira a colocar todas as variáveis em uma escala comum, reduzindo o tempo de treinamento e melhorando a estabilidade do modelo. Quando as variáveis possuem escalas muito diferentes, os valores de maior magnitude podem dominar o aprendizado do modelo.
+Além disso, após converter variáveis categóricas para forma numérica, normalizar os valores pode ser útil dependendo do algoritmo, pricipalmente em situações onde as variáveis resultantes de codificação podem ter magnitude diferente (por exemplo, variáveis de contagem ou de presença de características). Em alguns casos, mesmo variáveis categóricas numéricas que indicam uma ordem podem se beneficiar de normalização, pois coloca os valores em uma escala similar às demais variáveis do modelo.
+Da mesma forma, foram treinados modelos com e sem a normalização, ou com a normalização de parte das features, de modo a identificar a estratégia que apresentou os melhores resultados. 
+
+### Seleção de features
+No pré-processamento também foram identificadas as features com correlações altas, com limiar acima de 0.75, de modo a evitar a:
+* Multicolinearidade, que ocorre quando duas ou mais variáveis independentes em um modelo têm uma correlação forte entre si. Quando isso acontece, torna-se difícil para o modelo determinar o impacto individual de cada variável nas previsões, pois elas trazem informações muito semelhantes. Isso pode inflar os coeficientes de regressão em modelos lineares, tornando as estimativas menos confiáveis. O modelo se torna sensível a pequenas mudanças nos dados, resultando em coeficientes instáveis, que podem variar bastante se o conjunto de dados for alterado, comprometendo a interpretabilidade e a precisão do modelo.
+* Redundância de Informação, pois incluir variáveis redundantes não acrescenta novas informações ao modelo e pode, inclusive, aumentar o ruído. Em vez de contribuir para a previsão, elas podem apenas aumentar a complexidade do modelo sem melhorar seu desempenho, podendo levar a um ajuste excessivo (overfitting), onde o modelo se adapta muito bem aos dados de treino, mas não generaliza bem para novos dados.
+* Complexidade do Modelo, ao usar um número excessivo de variáveis para descrever o comportamento do target, tornando o modelo difícel de interpretar. Um modelo mais simples é preferível, pois facilita a interpretação e o entendimento dos fatores que influenciam as previsões. Remover variáveis com alta correlação contribui para uma análise mais clara e objetiva.
+* Impacto no Tempo de Treinamento, pois cada variável utilizada em um modelo afeta o tempo necessário para treinamento. Assim, variáveis redundantes aumentam o número de cálculos e a complexidade computacional, tornando o processo de treinamento mais lento. Eliminar variáveis com alta correlação reduz o tempo de processamento e otimiza o desempenho do modelo, sem perder significativamente a capacidade de previsão.
+
 ## Tipos de modelos treinados
 Considerando que o objetivo do projeto é preparar um modelo preditivo que classique as famílias do Cadastro Único, em 3 classes de renda, por meio das características das famílias apresentadas em varáveis numéricas categóricas, quantitativas e percentuais, foram treinados e comparados os seguintes modelos:
 * Random Forest Classifier - baseado em um conjunto de árvores de decisão, cada uma treinada em diferentes subconjuntos dos dados, é muito adequado para um problema de 3 classes, pois as árvores de decisão internas geram divisões que podem capturar a complexidade das diferentes classes;
@@ -740,11 +757,12 @@ Considerando que o objetivo do projeto é preparar um modelo preditivo que class
 * Regressão Logística Multinomial - método linear que pode ser adaptado para problemas de classificação com mais de duas classes, pode ser uma opção viável para problemas de classificação multiclasse, mas pode ter desempenho inferior em dados com relações complexas, a menos que se utilizem técnicas de feature engineering para melhorar o ajuste;
 *  K-Nearest Neighbors (KNN) - método baseado em distância que classifica as amostras com base nos K vizinhos mais próximos, pode funcionar bem para problemas de 3 classes em conjuntos de dados menores, mas seu desempenho pode cair em conjuntos maiores ou mais complexos.
 
-## Pré-processamento
+## Modelo selecionado
+Após diversas análises e compração do resultado, o modelo que apresentou a melhor conjugação de resultado de diversos fatores foi o **Modelo de classificação Catboost, treinado a partir da base balanceada na sua origem, pré-processada usando o one-hot encoding em todas as variáveis categóricas, preservando os valores -1 imputados quando da limpeza dos dados e com as variáveis numéricas normalizadas**. 
+O modelo foi selecionado a partir das características indicadas pela área de negócio esperadas para o modelo:
+*  
 
-### Etapas do treinamento
-Foi realizada uma série de etapas para o treinamento dos modelos, que possibilitarem posteriormente uma comparação entre os resultados obtidos utilizando diversas estratégias, comparando, dentre outras:
-* Foram 
+
 
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
