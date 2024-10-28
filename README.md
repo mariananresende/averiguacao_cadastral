@@ -678,7 +678,7 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 
   
 ## Autores do projeto (ordem alfabética)
-Grinaldo Oliveira
+Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
 
 Mariana Nogueira de Resende Sousa - MDS-SAGICAD-DMA-CGPI - mariananresende@gmail.com
 
