@@ -760,8 +760,23 @@ Considerando que o objetivo do projeto é preparar um modelo preditivo que class
 ## Modelo selecionado
 Após diversas análises e compração do resultado, o modelo que apresentou a melhor conjugação de resultado de diversos fatores foi o **Modelo de classificação Catboost, treinado a partir da base balanceada na sua origem, pré-processada usando o one-hot encoding em todas as variáveis categóricas, preservando os valores -1 imputados quando da limpeza dos dados e com as variáveis numéricas normalizadas**. 
 O modelo foi selecionado a partir das características indicadas pela área de negócio esperadas para o modelo:
-*  
+*  Uma acurácia razoável, de modo a evitar falsos positivos;
+*  Uma alto recall, especialmente para a classe 2, de modo a evitar falsos negativos. Como o objetivo é identificar as famílias a serem convocada para uma qualificação cadastral, é importante que as famílias que tenham características de serem classificadas como classe 2 sejam identificadas, mesmo que para isso tenha um risco um pouco mais elevado de que famílias da classe 0 ou 1 sejam classificadas como 2.
+Além disso, foram considerados também, para a seleção do modelo, um equilíbrio entre essas duas métricas, e para tanto comparados os valores do F1-Score dos modelos, além da análise do AUC, que avalia a capacidade do modelo de separar as classes.
+Assim, o modelo selecionado apresentou os seguintes resultados:
+| Classe |  Precisão | Recall | F1-Score | AUC |
+|----|-----|-----|------------| ------ |
+| Classe 0 | 0.7683 | 0.807884 |  0.7876 | 0.9199 |
+| Classe 1 | 0.6819 |  0.6483 | 0.6647 | 0.8467 |
+| Classe 2 | 0.7926 | 0.7906 | 0.7916 | 0.9300 |
 
+Considerando o modelo como um todo, pode-se destacar:
+* O modelo apresentou uma acurácia de 0.7494, significando que o modelo acertou cerca de 74,94% das previsões. Embora a acurácia não seja sempre a melhor métrica em problemas de classes desbalanceadas, ela é complementada pelas outras métricas para uma visão mais detalhada.
+* Uma alta Capacidade de Discriminação (AUC Elevado), com um AUC superior a 0.9 para duas das classes, a 0 e a 1, e um AUC geral de 0.8989, o modelo mostra uma forte habilidade para diferenciar as classes corretamente.
+* Um bom Equilíbrio entre Precision e Recall, pois o F1-score é relativamente alto para todas as classes, especialmente para a classe 2.
+* O modelo apresentou um desempenho consistente entre as classes, indicando que não está focado em uma classe específica, mas está tentando capturar bem todas elas.
+
+## Utilização do modelo
 
 
 ## Autores do projeto (ordem alfabética)
