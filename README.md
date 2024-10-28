@@ -682,7 +682,7 @@ Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br
 
 Mariana Nogueira de Resende Sousa - MDS-SAGICAD-DMA-CGPI - mariananresende@gmail.com
 
-Michela
+Michela Barreto Camboim Gonçalves Feitosa - Agência Nacional de Saúde Suplementar - mcamboim@gmail.com
 
 Renata Guanaes - Departamento de Estudos Econômicos/CADE - rguanaes@gmail.com
 
