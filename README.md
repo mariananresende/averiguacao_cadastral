@@ -783,7 +783,7 @@ As etapas para a construção do modelo e os resultados obtidos podem ser acessa
 ## Utilização do modelo
 Para a utilização do modelo [CatBoostClassifier_balanceado.pkl](https://github.com/mariananresende/averiguacao_cadastral/blob/main/CatBoostClassifier_balanceado.pkl) e predição das classes é preciso fazer a limpeza das bases, de modo a retirar o valores NaN. Sugere-se usar as regras descritas na seção "Limpeza das bases", a qual segue as regras de preenchimento do formulário do Cadastro Único.
 
-Após esta etapa é preciso criar uma base de dados final com as features selecionadas no modelo, o que pode ser feito por meio do notebook Gerando_df_modelo_final.ipynb
+Após esta etapa é preciso criar uma base de dados final com as features selecionadas no modelo, o que pode ser feito por meio do notebook [Gerando_df_modelo_final.ipynb](https://github.com/mariananresende/averiguacao_cadastral/blob/main/Gerando_df_modelo_final.ipynb)
 
 Por fim, o df produzido deverá ser dividido em um dataframe X, com as features, e outro com a variável target classe_renda, para posterior comparação. Para tanto, o caminho está detalhado no notebook Testando_modelo.ipynb
 
