@@ -798,5 +798,5 @@ Renata Guanaes - Departamento de Estudos Econômicos/CADE - rguanaes@gmail.com
 Risla Miranda - SEGES/MGI - rislamiranda@gmail.com
 
 ## Agradecimento especial
-Tutor Ricardo 
+Tutor Ricardo de Lima - MGI-SGD-DEDAD-CGIAR-CPRIA - ricdelima@gmail.com 
 
