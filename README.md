@@ -33,7 +33,7 @@ O modelo objetiva auxiliar em uma maior focalização das políticas públicas s
 * É possível identificar as variáveis que contribuem diretamente para a definição automática das famílias a serem incluídas no processo de averigação cadastral, evitando critérios subjetivos para a seleção das variáveis;
 * É possível atualizar o algoritmo com os dados mais atuais, de modo a acompanhar as mudanças das famílias ao longo do tempo. 
 
-## Bases de dados utilizadas
+# Bases de dados utilizadas
 As bases de dados utilizadas estão disponibilizadas no <a href="https://dados.gov.br/dados/conjuntos-dados/microdados-amostrais-do-cadastro-unico">Portal de Dados abertos do Governo Federal do MDS</a>.
 
 As bases são amostrais, desidentificadas, sendo que as mais recentes disponíveis no portal de dados abertos, acessado em outubro/2024, são da referêcia de 2018.
@@ -59,7 +59,7 @@ Na base final, foram mantidades aproximadamente 100 mil famílias incluídas na 
 
 Abaixo segue o dicionário das bases utilizadas.
 
-### Base famílias
+## Base famílias
 
 | Seq. | Nome da variável                 | Tipo   | Tamanho (Inteiro) | Tamanho (Decimal) | Descrição                                                                                                     |
 |------|-----------------------------------|--------|-------------------|------------------|---------------------------------------------------------------------------------------------------------------|
@@ -102,7 +102,7 @@ Abaixo segue o dicionário das bases utilizadas.
 | 35 | classe_renda                      | Numeric  | 1                |                   | Classificação da faixa de renda da família, calculada a partir do vlr_renda_media_fam: 0 - pobreza, 1 - baixa renda, 2 - acima de 1/2 S.M. :exclamation::heavy_exclamation_mark: **(Coluna nova incluída na base amostral)**|
 
 
-### Base pessoas
+## Base pessoas
 
 | Seq. | Nome da variável                 | Tipo    | Tamanho (Inteiro) | Tamanho (Decimal) | Descrição                                                                                                                                           |
 |------|-----------------------------------|---------|-------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -195,18 +195,18 @@ Foram feitas diversas análises adicionais para identificar possíveis ajustes n
 
 Após a limpeza da base amostral de pessoas, foi feito um merge com a base amostral de famílias, de modo a retirar as famílias que tiveram pessoas excluídas, gerando uma base final com mais de 96 mil famílias e com mais de 250 mil pessoas.
 
-## Variável dependente (target)
+# Variável dependente (target)
 A variavél dependente do projeto é classe_renda:
 * Classe 0 (pobreza);
 * Classe 1 (baixa renda);
 * Classe 2 (acima 1/2 S.M.).
 
-## Variáveis independentes (features)
+# Variáveis independentes (features)
 Para a seleção das variáveis independentes, serão aplicadas técnicas de Machine Learning para definição das que contribuem diretamente para a classificação mais adequada das famílias nas classes de renda. Além disso, será realizada engenharia de features para a construção de novas variáveis, a partir das existentes, que podem contribuir para a maior acurácia do modelo. 
 De modo a ouvir a área de negócio, foram realizadas reuniões com a Coordenadora-Geral de Acompanhamento e Qualificação do Cadastro, do Departamento de Operação do Cadastro Único (CGAQC/DECAU). 
 A partir das contribuições da área de negócio e com o objetivo de possibilitar o exercício por todos os autores do projeto no âmbito do Bootcamp, as análises foram dividdas em grupos temáticos, conforme se segue:
 
-### Características do Responsável Familiar - Mariana:
+## Características do Responsável Familiar - Mariana:
 ---
 O Responsável pela Unidadde Familiar (RUF) é a pessoa responsável por prestar as informações ao Cadastro Único em nome da família, que pode ser: 
 * Responsável Familiar (RF) - deve ser um dos componentes da família e morador do domicílio, com idade mínima de 16 (dezesseis) anos, preferencialmente mulher;
@@ -235,7 +235,7 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 * cod_trabalho_12_meses_memb;
 * qtd_meses_12_meses_memb.
 
-#### Resultado da análise
+### Resultado da análise
 Foi realizada a análise das variáveis relacionadas ao responsável familiar a partir da base amostral de pessoas, filtrando 'cod_parentesco_rf_pessoa' igual a 1. Para tanto, foi gerada uma matriz de correlação das variáveis, conforme figura abaixo.
 ![Matriz_correlacao](https://github.com/user-attachments/assets/0096bd1b-da05-4507-8911-4429fc256914)
 
@@ -325,7 +325,7 @@ Desta forma, de modo a construir um dataframe final, com as variáveis que serã
 * cod_curso_frequentou_pessoa_memb
 * cod_raca_cor_pessoa 
   
-### Características do domicílio - Renata:
+## Características do domicílio - Renata:
 ---
 Para analisar se as características do domicílio contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias**:
 * uf_ibge;
@@ -346,7 +346,7 @@ Para analisar se as características do domicílio contribuem para a acurácia d
 * classf;
 * Outros indicadores que sejam atualizadas de maneira recorrente, ao menos anualmente, que ajudem a caracterizar o perfil socioeconomico dos municípios brasileiros, de maneira a avaliar se contrbuem para uma maior acurácia do modelo.
 
-#### Resultado da análise exploratória
+### Resultado da análise exploratória
 ---
 
 Em primeiro lugar, foi realizada uma extensa análise exploratória dos dados de domicílios. Algumas das principais constatações podem ser resumidas abaixo:
@@ -372,7 +372,7 @@ Apenas a variável **quantidade de pessoas** possui correlação acima de 0.3 co
 
 Mais detalhes podem ser vistos no caderno: Analises_Renata/01_Analise_inicial_domicilios.html    
 
-#### Resultado da análise das variáveis de domicílios 
+### Resultado da análise das variáveis de domicílios 
 ---
 
 Conforme a matriz de correlação abaixo (variáveis independentes relacionadas com domicílios), recomenda-se excluir as seguintes variáveis (correlação acima de 0.8) :
@@ -390,7 +390,7 @@ Abaixo são listadas as variáveis de correlação acima de 0.7:
 ![10_Modelos_padrao_24_0](https://github.com/user-attachments/assets/7218bf2d-732a-44e0-b9d8-ded0d53dc9a0)
 
 
-#### Geração inicial de modelos de classificação 
+### Geração inicial de modelos de classificação 
 ---
 Foram testados alguns modelos para prever a classe de renda (variavel target) considerando-se somente as variáveis de domicílios:
 * CatBoost Classifier
@@ -406,7 +406,7 @@ Em um primeiro momento, sem utilização de busca de hiperparâmetros ou de bala
 
 Mais detalhes podem ser vistos no caderno: averiguacao_cadastral/Analises_Renata/02_Testando_Modelos.html
 
-#### Variáveis preditoras mais relevantes:
+### Variáveis preditoras mais relevantes:
 * qtde_pessoas 
 * uf_ibge 
 * qtd_comodos_domic_fam 
@@ -419,7 +419,7 @@ Mais detalhes podem ser vistos no caderno: averiguacao_cadastral/Analises_Renata
 * cod_local_domic_fam
 
 
-### Características da família e Composição familiar - Grinaldo: 
+## Características da família e Composição familiar - Grinaldo: 
 ---
 Para analisar se as características da família e a composição familiar contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de famílias** e da **Base de pessoas**:
 * dat_cadastramento_fam - Número de dias entre 31/12/2018 e a data de cadastramento;
@@ -557,7 +557,7 @@ Em relação às features mais importantes, após o balanceamento, segue o resum
 
 ![figura9](https://github.com/mariananresende/averiguacao_cadastral/blob/90b8a64022740660c1ad767bee2362963307f05c/Analises_Grinaldo/figura9.png)
 
-### Escolaridade - Risla:
+## Escolaridade - Risla:
 ---
 Para analisar se a escolaridade dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * alfabetizado: nova variável combinando as variáveis "cod_sabe_ler_escrever_memb" e "idade" de modo a identificar a situação da família em relação à pessoa com mais de 10 anos sem saber ler ou escrever;
@@ -657,7 +657,7 @@ Assim, segue a lista das variáveis selecionadas a partir dos resultados de feat
 7. pct_freq_particular
 8.  pct_nunca_freq_escola
 
-### Trabalho - Michela:
+## Trabalho - Michela:
 ---
 Para analisar se a condição de trabalho dos membros da familia contribuem para a acurácia do modelo, serão avaliadas, pelo menos, as variáveis abaixo da **Base de pessoas**. Neste caso, também deverá ser avaliado se as diferentes formas de cálculo interferem na acurácia do modelo, avaliando se o resultado categórico, quando existe ou não a situação, se o resultado absoluto, ou seja, o número absoluto daquele caso, ou o percentual, ou seja, o número absoluto divido pelo total de pessoas da familia, interferem na acurácia do modelo:
 * trabalho_semana_adulto: nova variável combinando as variáveis "cod_trabalhou_memb" e "idade" de modo a identificar a situação da família em relação à pessoa entre 18 e 59 anos que trabalhou na semana passada;
