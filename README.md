@@ -689,6 +689,8 @@ Por fim, a figura abaixo apresenta uma análise mais ampla a respeito da relaç�
 
 ![Radviz das variáveis de trabalho](Analises_Michela/radviz_trabalho.png)
 
+# Modelo de classificação em Classe de renda 0, 1 e 2
+
 ## Base de dados final
 Após a seleção das features mais importantes dentro de cada temática, foi preparada uma base conjugando as features selecionadas, a qual foi usada para treinamento do modelo. O dicionário da base preaprada segue abaixo:
 | Variável | Descrição |
@@ -811,7 +813,7 @@ Após esta etapa é preciso criar uma base de dados final com as features seleci
 
 Por fim, o df produzido deverá ser dividido em um dataframe X, com as features, e outro com a variável target classe_renda, para posterior comparação. Para tanto, o caminho está detalhado no notebook [Testando_modelo.ipynb](https://github.com/mariananresende/averiguacao_cadastral/blob/main/Testando_modelo.ipynb)
 
-## Autores do projeto (ordem alfabética)
+# Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
 
 Mariana Nogueira de Resende Sousa - MDS-SAGICAD-DMA-CGPI - mariananresende@gmail.com
