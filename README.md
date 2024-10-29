@@ -728,6 +728,7 @@ Essa estratégia permitiu comparar a performance dos modelos em uma base desbala
 
 ## Pré-processamento
 Após a preparação das bases, foi ralizado o pré-processamento das features, utilizando diferentes estratégias que permitiram comparar quais trouxeram melhores desempenho para o modelo.
+
 ### Processamento One-Hot Encoding
 Mesmo para variáveis categóricas que já são representadas numericamente, adotar essa técnica de processamento ajuda a:
 * Preservar o Significado Categórico: variáveis categóricas podem ser representadas numericamente, mas esses números não indicam uma ordem ou magnitude. Se usarmos essas variáveis diretamente em um modelo, ele pode interpretar os números como quantitativos, o que levaria a conclusões incorretas sobre a relação entre os valores. O One-Hot Encoding evita isso, transformando cada categoria em uma variável binária independente, preservando o caráter categórico da variável.
@@ -739,8 +740,12 @@ Desta forma, os modelos treinados foram testados com e sem o processamento utili
 
 ### Normalização
 Outro pré-processamento realizado diz respeito à normalização dos dados, de maneira a colocar todas as variáveis em uma escala comum, reduzindo o tempo de treinamento e melhorando a estabilidade do modelo. Quando as variáveis possuem escalas muito diferentes, os valores de maior magnitude podem dominar o aprendizado do modelo.
+
 Além disso, após converter variáveis categóricas para forma numérica, normalizar os valores pode ser útil dependendo do algoritmo, pricipalmente em situações onde as variáveis resultantes de codificação podem ter magnitude diferente (por exemplo, variáveis de contagem ou de presença de características). Em alguns casos, mesmo variáveis categóricas numéricas que indicam uma ordem podem se beneficiar de normalização, pois coloca os valores em uma escala similar às demais variáveis do modelo.
+
 Da mesma forma, foram treinados modelos com e sem a normalização, ou com a normalização de parte das features, de modo a identificar a estratégia que apresentou os melhores resultados. 
+
+O modelo selecionado, que apresentou as melhores métricas, tiveram os dados quantitativos normalizados, ou seja, as variáveis 'qtd_comodos_domic_fam', 'qtde_pessoas', 'dias_cadastramento', 'dias_atualizacao', 'ideb_2017_municipio', usando o StandardScaler, ou seja, ajustando os valores para que tenham média igual a 0 e desvio padrão igual a 1.
 
 ### Seleção de features
 No pré-processamento também foram identificadas as features com correlações altas, com limiar acima de 0.75, de modo a evitar a:
