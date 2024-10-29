@@ -671,11 +671,19 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 * trabalho_12meses_criança: nova variável combinando as variáveis "cod_trabalho_12_meses_memb" e "idade" de modo a identificar a situação da família em relação à pessoa menor de 18 anos com trabalho remunerado em algum período nos último 12 meses;
 * meses_trabalho: nova variável combinando as variáveis "qtd_meses_12_meses_memb" e "idade" de modo a identificar a situação da família em relação ao número de meses trabalhado nos últimos 12 meses para pessoa a partir de 18 anos.
 
-  Com a criação das variáveis acima, foi possível criar uma matriz de correlação para retirar uma das variáveis que possuía alta correlação (acima de 0.80), conforme figura a seguir:
+  Com a criação das variáveis acima, foi possível criar uma matriz de correlação para retirar uma das variáveis que possuía alta correlação (acima de 0.80). No caso das variáveis de trabalho, as variáveis de trabalho semana e trabalho ano mostraram correlação de 0,9, conforme figura a seguir:
 
 ![Gráfico de correlação das variáveis de trabalho](Analises_Michela/corr_trabalho.png)
 
-  
+Muitos modelos foram testados para verificar a relação de importância entre as variáveis de trabalho e a classe renda. Os resultados são apresentados em seguida:
+
+![Gráfico de features importance das variáveis de trabalho](Analises_Michela/features_importance_trabalho_decision_tree.png)
+
+![Gráfico de features importance das variáveis de trabalho](Analises_Michela/features_importance_trabalho_random_forest.png)
+
+![Gráfico de features importance das variáveis de trabalho](Analises_Michela/features_importance_trabalho_xgboost.png)
+
+![Gráfico de features importance das variáveis de trabalho](Analises_Michela/features_importance_trabalho_catboost.png)
 
 ## Base de dados final
 Após a seleção das features mais importantes dentro de cada temática, foi preparada uma base conjugando as features selecionadas, a qual foi usada para treinamento do modelo. O dicionário da base preaprada segue abaixo:
