@@ -797,7 +797,7 @@ Assim, o modelo selecionado apresentou os seguintes resultados:
 
 Considerando o modelo como um todo, pode-se destacar:
 * O modelo apresentou uma acurácia de 0.7494, significando que o modelo acertou cerca de 74,94% das previsões. Embora a acurácia não seja sempre a melhor métrica em problemas de classes desbalanceadas, ela é complementada pelas outras métricas para uma visão mais detalhada.
-* Uma alta Capacidade de Discriminação (AUC Elevado), com um AUC superior a 0.9 para duas das classes, a 0 e a 1, e um AUC geral de 0.8989, o modelo mostra uma forte habilidade para diferenciar as classes corretamente.
+* Uma alta Capacidade de Discriminação (AUC Elevado), com um AUC superior a 0.9 para duas das classes, a 0 e a 1, e um AUC geral de 0.8989, mostra uma forte habilidade do modelo para diferenciar as classes corretamente.
 * Um bom Equilíbrio entre Precision e Recall, pois o F1-score é relativamente alto para todas as classes, especialmente para a classe 2.
 * O modelo apresentou um desempenho consistente entre as classes, indicando que não está focado em uma classe específica, mas está tentando capturar bem todas elas.
 
@@ -809,7 +809,7 @@ Para a utilização do modelo [CatBoostClassifier_balanceado.pkl](https://github
 
 Após esta etapa é preciso criar uma base de dados final com as features selecionadas no modelo, o que pode ser feito por meio do notebook [Gerando_df_modelo_final.ipynb](https://github.com/mariananresende/averiguacao_cadastral/blob/main/Gerando_df_modelo_final.ipynb)
 
-Por fim, o df produzido deverá ser dividido em um dataframe X, com as features, e outro com a variável target classe_renda, para posterior comparação. Para tanto, o caminho está detalhado no notebook Testando_modelo.ipynb
+Por fim, o df produzido deverá ser dividido em um dataframe X, com as features, e outro com a variável target classe_renda, para posterior comparação. Para tanto, o caminho está detalhado no notebook [Testando_modelo.ipynb](https://github.com/mariananresende/averiguacao_cadastral/blob/main/Testando_modelo.ipynb)
 
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
