@@ -687,7 +687,7 @@ Muitos modelos foram testados para verificar a relação de importância entre a
 
 Por fim, a figura abaixo apresenta uma análise mais ampla a respeito da relação entre as variáveis do tema trabalho e a classe de renda. A partir dessa figura, é possível notar que as variáveis de percentual de adultos e idosos que tiveram algum trabalho no período de 12 meses e a ocupação de servidor ou militar parece mais associado às classes de renda 1 e 2. As pessoas da classe de renda zero, parecem estar mais associadas às ocupações de conta própria e atividades agrícolas e extrativistas.
 
-![Radviz das variáveis de trabalho](Analises_Michela/features_importance_trabalho_catboost.png)
+![Radviz das variáveis de trabalho](Analises_Michela/radviz_trabalho.png)
 
 ## Base de dados final
 Após a seleção das features mais importantes dentro de cada temática, foi preparada uma base conjugando as features selecionadas, a qual foi usada para treinamento do modelo. O dicionário da base preaprada segue abaixo:
