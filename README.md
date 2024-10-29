@@ -673,7 +673,7 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 
   Com a criação das variáveis acima, foi possível criar uma matriz de correlação para retirar uma das variáveis que possuía alta correlação (acima de 0.80), conforme figura a seguir:
 
-![Gráfico de correlação das variáveis de trabalho](matriz_corr_variaveis.png)
+![Gráfico de correlação das variáveis de trabalho](Analises_Michela/corr_trabalho.png)
 
   
 
