@@ -239,13 +239,7 @@ De modo a avaliar se as características do RF contribuem para a acurácia do mo
 Foi realizada a análise das variáveis relacionadas ao responsável familiar a partir da base amostral de pessoas, filtrando 'cod_parentesco_rf_pessoa' igual a 1. Para tanto, foi gerada uma matriz de correlação das variáveis, conforme figura abaixo.
 ![Matriz_correlacao](https://github.com/user-attachments/assets/0096bd1b-da05-4507-8911-4429fc256914)
 
-A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si, de modo a evitar a:
-* Multicolinearidade, que ocorre quando duas ou mais variáveis independentes em um modelo têm uma correlação forte entre si. Quando isso acontece, torna-se difícil para o modelo determinar o impacto individual de cada variável nas previsões, pois elas trazem informações muito semelhantes. Isso pode inflar os coeficientes de regressão em modelos lineares, tornando as estimativas menos confiáveis. O modelo se torna sensível a pequenas mudanças nos dados, resultando em coeficientes instáveis, que podem variar bastante se o conjunto de dados for alterado, comprometendo a interpretabilidade e a precisão do modelo.
-* Redundância de Informação, pois incluir variáveis redundantes não acrescenta novas informações ao modelo e pode, inclusive, aumentar o ruído. Em vez de contribuir para a previsão, elas podem apenas aumentar a complexidade do modelo sem melhorar seu desempenho, podendo levar a um ajuste excessivo (overfitting), onde o modelo se adapta muito bem aos dados de treino, mas não generaliza bem para novos dados.
-* Complexidade do Modelo, ao usar um número excessivo de variáveis para descrever o comportamento do target, tornando o modelo difícel de interpretar. Um modelo mais simples é preferível, pois facilita a interpretação e o entendimento dos fatores que influenciam as previsões. Remover variáveis com alta correlação contribui para uma análise mais clara e objetiva.
-* Impacto no Tempo de Treinamento, pois cada variável utilizada em um modelo afeta o tempo necessário para treinamento. Assim, variáveis redundantes aumentam o número de cálculos e a complexidade computacional, tornando o processo de treinamento mais lento. Eliminar variáveis com alta correlação reduz o tempo de processamento e otimiza o desempenho do modelo, sem perder significativamente a capacidade de previsão.
-
-Assim, foram retiradas do dataframe as variáveis: 'cod_afastado_trab_memb', 'qtd_meses_12_meses_memb' e 'cod_trabalho_12_meses_memb'.
+A partir da análise da matriz, foram retiradas as variáveis com correlação maior que 0.8, por terem uma forte relação linear entre si, sendo retiradas do dataframe as variáveis: 'cod_afastado_trab_memb', 'qtd_meses_12_meses_memb' e 'cod_trabalho_12_meses_memb'.
 
 Após essa etapa, foram testados quatro modelos preditivos que são indicados para modelos com variáveis numéricas categóricas e quantitativas. Após o treinamento dos modelos e busca de hiperparâmetros, foram indentificados os seguites resultados para cada um dos modelos:
 * Melhores hiperparâmetros para DecisionTree: {'classifier__max_depth': 7, 'classifier__min_samples_split': 10}
@@ -676,15 +670,139 @@ Para analisar se a condição de trabalho dos membros da familia contribuem para
 * trabalho_12meses_criança: nova variável combinando as variáveis "cod_trabalho_12_meses_memb" e "idade" de modo a identificar a situação da família em relação à pessoa menor de 18 anos com trabalho remunerado em algum período nos último 12 meses;
 * meses_trabalho: nova variável combinando as variáveis "qtd_meses_12_meses_memb" e "idade" de modo a identificar a situação da família em relação ao número de meses trabalhado nos últimos 12 meses para pessoa a partir de 18 anos.
 
-  
+## Base de dados final
+Após a seleção das features mais importantes dentro de cada temática, foi preparada uma base conjugando as features selecionadas, a qual foi usada para treinamento do modelo. O dicionário da base preaprada segue abaixo:
+| Variável | Descrição |
+| ------- | -------|
+| id_familia  |  Identificador único da família para pareamento com a base de pessoas |
+| rf_idade  | Idade do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1, conforme dicionário da **base pessoas**, e da variável 'idade' |
+| rf_trab_principal |  Função principal do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_principal_trab_memb', conforme dicionário da **base pessoas** |    
+| rf_com_deficiencia |   Marcação se responsável familiar tem deficiência, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_deficiencia_memb', conforme dicionário da **base pessoas** |
+| rf_trab_agricultura  | Marcação se responsável familiar atua em atividade extrativista, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_agricultura_trab_memb', conforme dicionário da **base pessoas** |
+|   rf_sexo  | Sexo do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_sexo_pessoa', conforme dicionário da **base pessoas** |
+|  rf_curso_frequentou | Identificação do curso mais elevado que o responsável familiar frequentou, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_curso_frequentou_pessoa_memb', conforme dicionário da **base pessoas** |        | rf_curso_frequenta  |  Identificação do curso que o responsável familiar frequenta, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_curso_frequenta_memb', conforme dicionário da **base pessoas** |
+|   rf_trabalhou_semana  | Identificação se o responsável familiar trabalhou na semana passada, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_trabalhou_memb', conforme dicionário da **base pessoas** |
+|   rf_cor_raca   | Cor ou raça do responsável familiar, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_raca_cor_pessoa', conforme dicionário da **base pessoas** |      
+|  rf_concluiu_curso |  Marcação se responsável familiar concluiu o curso mais elevado que frequentou, calculado a partir do cruzamento do campo 'cod_parentesco_rf_pessoa' == 1 e do campo 'cod_concluiu_frequentou_memb', conforme dicionário da **base pessoas** |
+|  pct_extrativista  | Percentual dos adultos que atuam em atividade extrativista, calculado por meio do campo 'cod_agricultura_trab_memb' == 1, com o filtro de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+| pct_conta_propria | Percentual de adultos que trabalham por conta própria, calculado por meio do campo 'cod_principal_trab_memb'] == 1, com filtro de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+|    pct_trab_rural_temporario | Percentual de adultos que atuam como trabalhador temporário em área rual, calculado por meio do campo 'cod_principal_trab_memb' == 2, com filtro de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+| pct_empregado_sem_carteira | Percentual de adultos empregados sem carteira assinada, calculado por meio do campo 'cod_principal_trab_memb' == 3, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+ |  pct_empregado_com_carteira |Percentual de adultos empregados com carteira assinada, calculado por meio do campo 'cod_principal_trab_memb' == 4, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+ | pct_trab_domestico_sem_carteira | Percentual de adultos trabalhadores domésticos sem carteira assinada, calculado por meio do campo 'cod_principal_trab_memb' == 5, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+ | pct_militar_servidor | Percentual de adultos militares ou servidores públicos, calculado por meio do campo 'cod_principal_trab_memb' == 8, com filtro  de 'idade' >= 18 e <= 59), dividido pela 'qtde_pessoas' |
+ | pct_trabalho_12meses_adulto | Percentual de adultos com trabalho em algum período nos últimos 12 meses, calculado por meio do campo 'cod_trabalho_12_meses_memb' == 1, com filtro  de 'idade' >= 18 e <= 59, dividido pela 'qtde_pessoas' |
+| pct_trabalho_12meses_idoso | Percentual de idosos com trabalho em algum período nos últimos 12 meses, calculado por meio do campo 'cod_trabalho_12_meses_memb' == 1, com filtro  de 'idade' >= 60, dividido pela 'qtde_pessoas' |
+| pct_trabalho_12meses_crianca | Percentual de idosos com trabalho em algum período nos últimos 12 meses, calculado por meio do campo 'cod_trabalho_12_meses_memb' == 1, com filtro  de 'idade' <18 dividido pela 'qtde_pessoas'. Lembrando que neste caso, conforme registrado no tópico referente à limpeza de dados, os campos de trabalho só foram considerado para idade >= 14 |           
+| pct_nao_alfabetizados  | Percentual de pessoas não alfabetizadas, calculado por meio do campo 'cod_sabe_ler_escrever_memb' == 2, com filtro de 'idade' >= 10, divido  pela 'qtde_pessoas' |
+|  pct_n_freq_escola  | Percentual de pessoas em idade escolar que não frequentam a escola, calculado por meio do campo 'ind_frequenta_escola_memb' == 3, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+ | pct_freq_publica   | Percentual de pessoas em idade escolar que frequentam escola pública, calculada por meio do campo 'ind_frequenta_escola_memb' == 1, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+ |  pct_freq_particular  | Percentual de pessoas em idade escolar que frequentam escola particular, calculada por meio do campo 'ind_frequenta_escola_memb' == 2, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+ |  pct_adulto_nunca_freq_escola  | Percentual de adultos que nunca frequentaram escola, calculada por meio do campo 'ind_frequenta_escola_memb' == 4, com filtro de 'idade' >= 18, dividido pela 'qtde_pessoas' |
+ |  pct_escolar_nunca_freq_escola | Percentual de pessoas em idade escolar que nunca frequentaram escola, calculada por meio do campo 'ind_frequenta_escola_memb' == 4, com filtro de 'idade' >= 4 e <= 17, dividido pela 'qtde_pessoas' |
+|  pct_freq_creche | Percentual de pessoas da primeira infância que frequentam creche, calculada por meio do campo 'cod_curso_frequenta_memb' == 1, com filtro de 'idade' <4, dividido pela 'qtde_pessoas' |     
+|  pct_idosos  | Pecentual de idosos que compõem a família, calculado por meio do filtro 'idade' >= 60, dividido pela 'qtde_pessoas'|
+|  pct_deficientes  | Percentual de pessoas com deficiência que compõem a família, calculado por meio do campo 'cod_deficiencia_memb' == 1, dividido pela 'qtde_pessoas' |     
+|  pct_1_infancia |  Percentual de pessoas da primeira infância que compõem a família, calculado por meio do filtro 'idade' <=6, dividido pela 'qtde_pessoas' |
+|  pct_adulto |  Percentual de adultos que compõem a família, calculado por meio do filtro 'idade' >= 18, dividido pela 'qtde_pessoas' |
+ |  pct_crianca_adolescente  | Percentual de crianças e adolscentes que compõem a família, calculado por meio do filtro 'idade' >6 e <= 17, dividido pela 'qtde_pessoas' |  
+ |  fam_gpte  | Marcação se a família compõem algum Grupo populacional,  tradicional e específico (GPTE), calculado por meio dos filtros 'ind_parc_mds_fam' != 0 ou 'cod_familia_indigena_fam'] == 1 ou 'ind_familia_quilombola_fam'] == 1 |
+|  ideb_2017_municipio | Índice de Desenvolvimento da Educação Básica (Ideb) de 2017 |
+|  uf_ibge | Nova variável criada com o código das Unidades Federativas (UF), conforme dicionário da **base familia** |  
+|  classf | Subdivisão pela Unidade Federativa e divisão administrativa, conforme dicionário da **base familia** | 
+|  cod_local_domic_fam  | Características do local onde está situado o domicílio, conforme dicionário da **base familia** | 
+|  qtd_comodos_domic_fam | Quantidade de comodos do domicilio |
+|  cod_material_piso_fam | Material predominante no piso do domicílio, conforme dicionário da **base familia** | 
+|  cod_iluminacao_domic_fam  | Tipo de iluminação do domicílio, conforme dicionário da **base familia** | 
+|  cod_familia_indigena_fam | Marcação se a família é indígena | 
+|  ind_familia_quilombola_fam | Marcação se a família é quilombola | 
+|  ind_parc_mds_fam | Marcação se a família pertence a algum dos Grupos tradicionais e específicos | 
+|  qtde_pessoas  | Quantidade de pessoas que compõem a família e são utilizadas no cálculo da renda per capita familiar, conforme dicionário da **base familia** | 
+|  dias_cadastramento | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_cadastramento_fam', conforme dicionário da **base familia** |
+|  dias_atualizacao | Variável nova calculada por meio da diferença entre a data de referência da base de dados, 31/12/2018, e o campo 'dat_atualizacao_familia', conforme dicionário da **base familia** |
+|  classe_renda | Variável nova com as 3 classes de renda a serem preditas pelo modelo, conforme dicionário da **base familia** |
+
+Foram preparados dois dataframes com as features acima descritas, o df_modelo, o qual foi construído a partir do balanceamento da classe_renda original, e o df_modelo_balanceado, construído a partir de uma amostra que levou em conta o balanceamento das calsses, de modo a ter um número semelhante de dados relacionados às três classes. Os dataframes constam na pasta Data_modelo.
+
+Essa estratégia permitiu comparar a performance dos modelos em uma base desbalanceada, em uma base balanceada com posterior estratégias de balanceamento e a partir de uma base balanceada com dados originais.
+
+## Pré-processamento
+Após a preparação das bases, foi ralizado o pré-processamento das features, utilizando diferentes estratégias que permitiram comparar quais trouxeram melhores desempenho para o modelo.
+
+### Processamento One-Hot Encoding
+Mesmo para variáveis categóricas que já são representadas numericamente, adotar essa técnica de processamento ajuda a:
+* Preservar o Significado Categórico: variáveis categóricas podem ser representadas numericamente, mas esses números não indicam uma ordem ou magnitude. Se usarmos essas variáveis diretamente em um modelo, ele pode interpretar os números como quantitativos, o que levaria a conclusões incorretas sobre a relação entre os valores. O One-Hot Encoding evita isso, transformando cada categoria em uma variável binária independente, preservando o caráter categórico da variável.
+* Evitar Relações Espúrias entre Categorias: variáveis categóricas numéricas podem ser erroneamente tratadas como variáveis ordinais (onde a ordem importa). Isso significa que os modelos podem criar relações que não existem entre os números atribuídos às categorias.
+O One-Hot Encoding trata cada categoria como uma entidade independente, eliminando essas relações artificiais.
+* Melhor Desempenho do Modelo: Alguns algoritmos de machine learning, como árvores de decisão e redes neurais, tendem a ter um melhor desempenho quando recebem variáveis binárias (0/1) para cada categoria. O One-Hot Encoding facilita a identificação de padrões entre categorias de forma mais eficaz nesses modelos.
+* Compatibilidade com Algoritmos de Machine Learning: Certos algoritmos, como regressão logística e K-means, assumem que as variáveis de entrada são numéricas e podem ser influenciados por magnitude. Nesse contexto, variáveis categóricas numéricas sem transformação podem distorcer os resultados. O One-Hot Encoding converte essas variáveis em uma forma que mantém a integridade dos dados categóricos.
+Desta forma, os modelos treinados foram testados com e sem o processamento utilizando o one-hot encoding, ou utilizando o one-hot encoding para algunas variáveis categóricas, de modo a identificar a estratégia que apresentou os melhores resultados.
+
+### Normalização
+Outro pré-processamento realizado diz respeito à normalização dos dados, de maneira a colocar todas as variáveis em uma escala comum, reduzindo o tempo de treinamento e melhorando a estabilidade do modelo. Quando as variáveis possuem escalas muito diferentes, os valores de maior magnitude podem dominar o aprendizado do modelo.
+
+Além disso, após converter variáveis categóricas para forma numérica, normalizar os valores pode ser útil dependendo do algoritmo, pricipalmente em situações onde as variáveis resultantes de codificação podem ter magnitude diferente (por exemplo, variáveis de contagem ou de presença de características). Em alguns casos, mesmo variáveis categóricas numéricas que indicam uma ordem podem se beneficiar de normalização, pois coloca os valores em uma escala similar às demais variáveis do modelo.
+
+Da mesma forma, foram treinados modelos com e sem a normalização, ou com a normalização de parte das features, de modo a identificar a estratégia que apresentou os melhores resultados. 
+
+O modelo selecionado, que apresentou as melhores métricas, tiveram os dados quantitativos normalizados, ou seja, as variáveis 'qtd_comodos_domic_fam', 'qtde_pessoas', 'dias_cadastramento', 'dias_atualizacao', 'ideb_2017_municipio', usando o StandardScaler, ou seja, ajustando os valores para que tenham média igual a 0 e desvio padrão igual a 1.
+
+### Seleção de features
+No pré-processamento também foram identificadas as features com correlações altas, com limiar acima de 0.75, de modo a evitar a:
+* Multicolinearidade, que ocorre quando duas ou mais variáveis independentes em um modelo têm uma correlação forte entre si. Quando isso acontece, torna-se difícil para o modelo determinar o impacto individual de cada variável nas previsões, pois elas trazem informações muito semelhantes. Isso pode inflar os coeficientes de regressão em modelos lineares, tornando as estimativas menos confiáveis. O modelo se torna sensível a pequenas mudanças nos dados, resultando em coeficientes instáveis, que podem variar bastante se o conjunto de dados for alterado, comprometendo a interpretabilidade e a precisão do modelo.
+* Redundância de Informação, pois incluir variáveis redundantes não acrescenta novas informações ao modelo e pode, inclusive, aumentar o ruído. Em vez de contribuir para a previsão, elas podem apenas aumentar a complexidade do modelo sem melhorar seu desempenho, podendo levar a um ajuste excessivo (overfitting), onde o modelo se adapta muito bem aos dados de treino, mas não generaliza bem para novos dados.
+* Complexidade do Modelo, ao usar um número excessivo de variáveis para descrever o comportamento do target, tornando o modelo difícel de interpretar. Um modelo mais simples é preferível, pois facilita a interpretação e o entendimento dos fatores que influenciam as previsões. Remover variáveis com alta correlação contribui para uma análise mais clara e objetiva.
+* Impacto no Tempo de Treinamento, pois cada variável utilizada em um modelo afeta o tempo necessário para treinamento. Assim, variáveis redundantes aumentam o número de cálculos e a complexidade computacional, tornando o processo de treinamento mais lento. Eliminar variáveis com alta correlação reduz o tempo de processamento e otimiza o desempenho do modelo, sem perder significativamente a capacidade de previsão.
+
+## Tipos de modelos treinados
+Considerando que o objetivo do projeto é preparar um modelo preditivo que classique as famílias do Cadastro Único, em 3 classes de renda, por meio das características das famílias apresentadas em varáveis numéricas categóricas, quantitativas e percentuais, foram treinados e comparados os seguintes modelos:
+* Random Forest Classifier - baseado em um conjunto de árvores de decisão, cada uma treinada em diferentes subconjuntos dos dados, é muito adequado para um problema de 3 classes, pois as árvores de decisão internas geram divisões que podem capturar a complexidade das diferentes classes;
+* XGBoost - combina várias árvores de decisão de forma sequencial, corrigindo erros das árvores anteriores, é uma boa escolha para problemas de classificação com múltiplas classes devido ao seu desempenho e flexibilidade, especialmente quando os dados apresentam relações complexas entre variáveis;
+* CatBoost Classifier - lida com variáveis categóricas de forma mais eficiente, sendo ideal para problemas que incluem variáveis categóricas numéricas e quantitativas, sendo uma boa escolha quando se deseja maximizar a performance sem a necessidade de muito pré-processamento;
+* Regressão Logística Multinomial - método linear que pode ser adaptado para problemas de classificação com mais de duas classes, pode ser uma opção viável para problemas de classificação multiclasse, mas pode ter desempenho inferior em dados com relações complexas, a menos que se utilizem técnicas de feature engineering para melhorar o ajuste;
+*  K-Nearest Neighbors (KNN) - método baseado em distância que classifica as amostras com base nos K vizinhos mais próximos, pode funcionar bem para problemas de 3 classes em conjuntos de dados menores, mas seu desempenho pode cair em conjuntos maiores ou mais complexos.
+
+## Modelo selecionado
+Após diversas análises e compração do resultado, o modelo que apresentou a melhor conjugação de resultado de diversos fatores foi o **Modelo de classificação Catboost, treinado a partir da base balanceada na sua origem, pré-processada usando o one-hot encoding em todas as variáveis categóricas, preservando os valores -1 imputados quando da limpeza dos dados e com as variáveis numéricas normalizadas**. 
+O modelo foi selecionado a partir das características indicadas pela área de negócio esperadas para o modelo:
+*  Uma acurácia razoável, de modo a evitar falsos positivos;
+*  Uma alto recall, especialmente para a classe 2, de modo a evitar falsos negativos. Como o objetivo é identificar as famílias a serem convocada para uma qualificação cadastral, é importante que as famílias que tenham características de serem classificadas como classe 2 sejam identificadas, mesmo que para isso tenha um risco um pouco mais elevado de que famílias da classe 0 ou 1 sejam classificadas como 2.
+Além disso, foram considerados também, para a seleção do modelo, um equilíbrio entre essas duas métricas, e para tanto comparados os valores do F1-Score dos modelos, além da análise do AUC, que avalia a capacidade do modelo de separar as classes.
+Assim, o modelo selecionado apresentou os seguintes resultados:
+
+| Classe |  Precisão | Recall | F1-Score | AUC |
+|----|-----|-----|------------| ------ |
+| Classe 0 | 0.7683 | 0.807884 |  0.7876 | 0.9199 |
+| Classe 1 | 0.6819 |  0.6483 | 0.6647 | 0.8467 |
+| Classe 2 | 0.7926 | 0.7906 | 0.7916 | 0.9300 |
+
+Considerando o modelo como um todo, pode-se destacar:
+* O modelo apresentou uma acurácia de 0.7494, significando que o modelo acertou cerca de 74,94% das previsões. Embora a acurácia não seja sempre a melhor métrica em problemas de classes desbalanceadas, ela é complementada pelas outras métricas para uma visão mais detalhada.
+* Uma alta Capacidade de Discriminação (AUC Elevado), com um AUC superior a 0.9 para duas das classes, a 0 e a 1, e um AUC geral de 0.8989, o modelo mostra uma forte habilidade para diferenciar as classes corretamente.
+* Um bom Equilíbrio entre Precision e Recall, pois o F1-score é relativamente alto para todas as classes, especialmente para a classe 2.
+* O modelo apresentou um desempenho consistente entre as classes, indicando que não está focado em uma classe específica, mas está tentando capturar bem todas elas.
+
+As etapas para a construção do modelo e os resultados obtidos podem ser acessados e replicados por meio do notebook [Final_Modelo_df_balanceado_onehotencoder_Catboost.ipynb](https://github.com/mariananresende/averiguacao_cadastral/blob/main/Final_Modelo_df_balanceado_onehotencoder_Catboost.ipynb).
+
+
+## Utilização do modelo
+Para a utilização do modelo [CatBoostClassifier_balanceado.pkl](https://github.com/mariananresende/averiguacao_cadastral/blob/main/CatBoostClassifier_balanceado.pkl) e predição das classes é preciso fazer a limpeza das bases, de modo a retirar o valores NaN. Sugere-se usar as regras descritas na seção "Limpeza das bases", a qual segue as regras de preenchimento do formulário do Cadastro Único.
+
+Após esta etapa é preciso criar uma base de dados final com as features selecionadas no modelo, o que pode ser feito por meio do notebook [Gerando_df_modelo_final.ipynb](https://github.com/mariananresende/averiguacao_cadastral/blob/main/Gerando_df_modelo_final.ipynb)
+
+Por fim, o df produzido deverá ser dividido em um dataframe X, com as features, e outro com a variável target classe_renda, para posterior comparação. Para tanto, o caminho está detalhado no notebook Testando_modelo.ipynb
+
 ## Autores do projeto (ordem alfabética)
 Grinaldo Oliveira - IBGE - SES/BA-SSI - grinaldo.oliveira@ibge.gov.br 
 
 Mariana Nogueira de Resende Sousa - MDS-SAGICAD-DMA-CGPI - mariananresende@gmail.com
 
-Michela
+Michela Barreto Camboim Gonçalves Feitosa - Agência Nacional de Saúde Suplementar - mcamboim@gmail.com
 
 Renata Guanaes - Departamento de Estudos Econômicos/CADE - rguanaes@gmail.com
 
 Risla Miranda - SEGES/MGI - rislamiranda@gmail.com
+
+## Agradecimento especial
+Tutor Ricardo de Lima - MGI-SGD-DEDAD-CGIAR-CPRIA - ricdelima@gmail.com 
 
